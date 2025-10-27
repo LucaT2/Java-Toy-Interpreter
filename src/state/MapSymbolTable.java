@@ -34,4 +34,9 @@ public class MapSymbolTable implements SymbolTable {
     public Value getVariableValue(String variableName) {
         return symbolTable.get(variableName);
     }
+
+    @Override
+    public String toString() {
+        return "Symbol Table: " + symbolTable.toString();
+    }
 }

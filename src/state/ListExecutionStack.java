@@ -19,4 +19,13 @@ public class ListExecutionStack implements ExecutionStack {
         return statements.removeFirst();
     }
 
+    @Override
+    public boolean isEmpty(){
+        return statements.isEmpty();
+    }
+
+    @Override
+    public String toString() {
+        return "Execution Stack: "+ statements.toString();
+    }
 }

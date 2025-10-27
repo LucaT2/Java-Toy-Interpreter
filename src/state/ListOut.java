@@ -14,4 +14,9 @@ public class ListOut implements Out{
     public void append(Value value) {
         values.add(value);
     }
+
+    @Override
+    public String toString() {
+        return "Output: " + values.toString();
+    }
 }
