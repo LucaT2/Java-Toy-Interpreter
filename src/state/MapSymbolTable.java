@@ -3,6 +3,7 @@ package state;
 import model.Type;
 import model.statement.Statement;
 import model.value.Value;
+import state.exceptions.VariableNotInTable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +23,9 @@ public class MapSymbolTable implements SymbolTable {
 
     @Override
     public Type getVariableType(String variableName) {
+        if  (!symbolTable.containsKey(variableName)) {
+            throw new VariableNotInTable("String variable is not in the symbol table");
+        }
         return symbolTable.get(variableName).getType();
     }
 
