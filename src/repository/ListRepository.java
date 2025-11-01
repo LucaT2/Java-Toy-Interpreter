@@ -9,6 +9,10 @@ import java.util.List;
 
 public class ListRepository implements Repository {
     private final List<ProgramState> programStates = new ArrayList<>();
+    private final String logFilePath;
+    public ListRepository(String logFilePath) {
+        this.logFilePath = logFilePath;
+    }
     public ProgramState getCurrentProgramState(){
         return programStates.getFirst();
     }
@@ -20,5 +24,8 @@ public class ListRepository implements Repository {
             throw new ProgramStateNotFound("Program state not found, try removing an existing program state");
         }
         programStates.remove(programState);
+    }
+    public void logProgramStateExecution(){
+
     }
 }

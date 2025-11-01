@@ -7,5 +7,5 @@ public interface Repository {
     ProgramState getCurrentProgramState();
     void addProgramState(ProgramState programState);
     void removeProgramState(ProgramState programState);
-
+    void logProgramStateExecution();
 }

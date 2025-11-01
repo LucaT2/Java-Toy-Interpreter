@@ -24,12 +24,7 @@ public class Controller {
         ProgramState programState = repository.getCurrentProgramState();
         while (!programState.executionStack().isEmpty()){
             programState = oneStep(programState);
-            IO.print(programState.executionStack());
-            IO.print("\n");
-            IO.print(programState.symbolTable());
-            IO.print("\n");
-            IO.print(programState.out());
-            IO.println("\n");
+            repository.logProgramStateExecution();
         }
     }
     public void addProgramState(ProgramState programState){
@@ -43,7 +38,8 @@ public class Controller {
         executionStack.push(statement);
         SymbolTable symbolTable = new MapSymbolTable();
         Out output = new ListOut();
-        ProgramState programState = new ProgramState(executionStack, symbolTable, output);
+        FileTable fileTable = new MapFileTable();
+        ProgramState programState = new ProgramState(executionStack, symbolTable, output, fileTable);
         addProgramState(programState);
         allStep();
         removeProgramState(programState);

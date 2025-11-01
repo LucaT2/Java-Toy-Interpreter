@@ -2,16 +2,15 @@ package model.value;
 
 import model.Type;
 
-public record BooleanValue(boolean value) implements Value {
-
+public record StringValue(String value) implements Value {
     @Override
     public Type getType() {
-        return Type.BOOLEAN;
+        return Type.STRING;
     }
 
     @Override
     public Value getValue() {
-        return new BooleanValue(value);
+        return new StringValue(value);
     }
 
 }

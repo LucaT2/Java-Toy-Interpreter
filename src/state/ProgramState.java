@@ -3,5 +3,6 @@ package state;
 public record ProgramState(
         ExecutionStack executionStack,
         SymbolTable symbolTable,
-        Out out) {
+        Out out,
+        FileTable fileTable) {
 }

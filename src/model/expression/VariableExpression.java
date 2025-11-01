@@ -12,6 +12,6 @@ public record VariableExpression(
         if (!symbolTable.isDefined(variableName)) {
             throw new VariableNotDefinedException();
         }
-        return symbolTable.getVariableValue(variableName);
+        return symbolTable.LookUp(variableName);
     }
 }

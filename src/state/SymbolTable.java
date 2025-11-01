@@ -12,6 +12,6 @@ public interface SymbolTable {
 
     void updateValue(String variableName, Value value);
 
-    Value getVariableValue(String variableName);
+    Value LookUp(String variableName);
 
 }

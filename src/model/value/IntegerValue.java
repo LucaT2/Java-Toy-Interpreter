@@ -10,7 +10,14 @@ public record IntegerValue(int value) implements Value {
     }
 
     @Override
+    public Value getValue() {
+        return new  IntegerValue(value);
+    }
+
+    @Override
     public String toString() {
         return String.valueOf(value);
     }
+
+
 }
