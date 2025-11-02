@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public record openRFile(Expression expression) implements Statement {
+public record OpenRFile(Expression expression) implements Statement {
     @Override
     public ProgramState execute(ProgramState state) {
         Value filename = expression.evaluate(state.symbolTable());

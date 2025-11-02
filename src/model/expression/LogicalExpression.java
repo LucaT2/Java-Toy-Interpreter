@@ -15,11 +15,11 @@ public record LogicalExpression(
     public Value evaluate(SymbolTable symbolTable) {
         Value leftValue = leftOperand.evaluate(symbolTable);
         if (!(leftValue instanceof BooleanValue(boolean leftBool)))
-            throw new InvalidTypeException();
+            throw new InvalidTypeException("Type mismatch");
 
         Value rightValue = rightOperand.evaluate(symbolTable);
         if (!(rightValue instanceof BooleanValue(boolean rightBool)))
-            throw new InvalidTypeException();
+            throw new InvalidTypeException("Type mismatch");
 
         boolean result = switch (operator) {
             case "&&" -> leftBool && rightBool;

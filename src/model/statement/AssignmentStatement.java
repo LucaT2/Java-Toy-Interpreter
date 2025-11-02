@@ -19,7 +19,7 @@ public record AssignmentStatement
 
         Value value = expression.evaluate(symbolTable);
         if (value.getType() != symbolTable.getVariableType(variableName)) {
-            throw new InvalidTypeException();
+            throw new InvalidTypeException("Type mismatch");
         }
 
         symbolTable.updateValue(variableName, value);

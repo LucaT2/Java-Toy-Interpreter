@@ -13,7 +13,7 @@ public record IfStatement
     public ProgramState execute(ProgramState state) {
         Value value = condition.evaluate(state.symbolTable());
         if (!(value instanceof BooleanValue(boolean booleanValue))) {
-            throw new InvalidTypeException();
+            throw new InvalidTypeException("Type mismatch");
         }
 
         Statement chosenStatement =

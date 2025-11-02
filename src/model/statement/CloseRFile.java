@@ -11,14 +11,14 @@ import model.expression.Expression;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public record closeRFile(Expression expression) implements Statement {
+public record CloseRFile(Expression expression) implements Statement {
     @Override
     public ProgramState execute(ProgramState state) {
         Value filename = expression.evaluate(state.symbolTable());
         if (filename.getType()!= Type.STRING){
             throw new InvalidTypeException("Filename for closing must be a string");
         }
-        if (state.fileTable().getFileDescriptor(filename) instanceof BufferedReader reader){
+        if (state.fileTable().lookUp(filename) instanceof BufferedReader reader){
             try {
                 reader.close();
                 state.fileTable().removeFile(filename);

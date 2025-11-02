@@ -22,6 +22,7 @@ public class Controller {
     }
     public void allStep(){
         ProgramState programState = repository.getCurrentProgramState();
+        repository.logProgramStateExecution();
         while (!programState.executionStack().isEmpty()){
             programState = oneStep(programState);
             repository.logProgramStateExecution();
@@ -30,16 +31,19 @@ public class Controller {
     public void addProgramState(ProgramState programState){
         repository.addProgramState(programState);
     }
+
     public void removeProgramState(ProgramState programState){
         repository.removeProgramState(programState);
     }
+
     public void runAll(Statement statement){
         ExecutionStack executionStack = new ListExecutionStack();
         executionStack.push(statement);
-        SymbolTable symbolTable = new MapSymbolTable();
-        Out output = new ListOut();
-        FileTable fileTable = new MapFileTable();
-        ProgramState programState = new ProgramState(executionStack, symbolTable, output, fileTable);
+        ProgramState programState = new ProgramState(
+                executionStack,
+                new MapSymbolTable(),
+                new ListOut(),
+                new MapFileTable());
         addProgramState(programState);
         allStep();
         removeProgramState(programState);

@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class MapFileTable implements FileTable {
     HashMap<Value, BufferedReader> mapFileTable = new HashMap<>();
     @Override
-    public BufferedReader getFileDescriptor(Value key) {
+    public BufferedReader lookUp(Value key) {
         if(mapFileTable.containsKey(key)) {
             return mapFileTable.get(key);
         }
@@ -32,5 +32,9 @@ public class MapFileTable implements FileTable {
     @Override
     public Boolean fileExists(Value key) {
         return mapFileTable.containsKey(key);
+    }
+    @Override
+    public String toString() {
+        return "MapFileTable " + mapFileTable.toString();
     }
 }

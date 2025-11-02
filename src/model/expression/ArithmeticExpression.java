@@ -19,11 +19,11 @@ public record ArithmeticExpression(
 
         Value leftValue = leftOperand.evaluate(symbolTable);
         if (!(leftValue instanceof IntegerValue(int leftInt)))
-            throw new InvalidTypeException();
+            throw new InvalidTypeException("Type mismatch");
 
         Value rightValue = rightOperand.evaluate(symbolTable);
         if (!(rightValue instanceof IntegerValue(int rightInt)))
-            throw new InvalidTypeException();
+            throw new InvalidTypeException("Type mismatch");
 
         int result = switch (operator) {
             case '+' -> leftInt + rightInt;
