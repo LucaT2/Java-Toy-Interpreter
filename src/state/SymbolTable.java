@@ -3,6 +3,8 @@ package state;
 import model.Type;
 import model.value.Value;
 
+import java.util.Map;
+
 public interface SymbolTable {
     boolean isDefined(String variableName);
 
@@ -13,5 +15,7 @@ public interface SymbolTable {
     void updateValue(String variableName, Value value);
 
     Value LookUp(String variableName);
+
+    public Map<String, Value> getContents();
 
 }

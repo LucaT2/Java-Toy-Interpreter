@@ -19,4 +19,7 @@ public class ListOut implements Out{
     public String toString() {
         return "Output: " + values.toString();
     }
+    public List<Value> getContents() {
+        return values;
+    }
 }

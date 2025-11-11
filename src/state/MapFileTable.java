@@ -8,9 +8,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
+import java.util.Map;
 
 public class MapFileTable implements FileTable {
-    HashMap<Value, BufferedReader> mapFileTable = new HashMap<>();
+    Map<Value, BufferedReader> mapFileTable = new HashMap<>();
     @Override
     public BufferedReader lookUp(Value key) {
         if(mapFileTable.containsKey(key)) {
@@ -36,5 +37,8 @@ public class MapFileTable implements FileTable {
     @Override
     public String toString() {
         return "MapFileTable " + mapFileTable.toString();
+    }
+    public Map<Value, BufferedReader> getContents() {
+        return mapFileTable;
     }
 }

@@ -28,4 +28,7 @@ public class ListExecutionStack implements ExecutionStack {
     public String toString() {
         return "Execution Stack: "+ statements.toString();
     }
+    public List<Statement> getContents() {
+        return statements;
+    }
 }

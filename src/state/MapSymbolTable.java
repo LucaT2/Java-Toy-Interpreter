@@ -42,4 +42,8 @@ public class MapSymbolTable implements SymbolTable {
     public String toString() {
         return "Symbol Table: " + symbolTable.toString();
     }
+
+    public Map<String, Value> getContents() {
+        return symbolTable;
+    }
 }

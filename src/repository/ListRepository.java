@@ -1,12 +1,16 @@
 package repository;
 
+import model.statement.Statement;
+import model.value.Value;
 import repository.exception.FileRepositoryException;
 import repository.exception.ProgramStateNotFound;
 import state.ProgramState;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class ListRepository implements Repository {
     private final List<ProgramState> programStates = new ArrayList<>();
@@ -34,10 +38,30 @@ public class ListRepository implements Repository {
     }
     public void logProgramStateExecution(){
         ProgramState currentProgramState = getCurrentProgramState();
-        this.logFile.write(currentProgramState.executionStack().toString() + "\n");
-        this.logFile.write(currentProgramState.symbolTable().toString() + "\n");
-        this.logFile.write(currentProgramState.out().toString() + "\n");
-        this.logFile.write(currentProgramState.fileTable().toString() + "\n");
+
+        this.logFile.println("ExeStack:");
+        List<Statement> stackItems = new ArrayList<>(currentProgramState.executionStack().getContents());
+        for (Statement item : stackItems) {
+            this.logFile.println(item.toString());
+        }
+
+        this.logFile.println("SymTable:");
+        for (Map.Entry<String, Value> entry : currentProgramState.symbolTable().getContents().entrySet()) {
+            this.logFile.println(entry.getKey() + " --> " + entry.getValue().toString());
+        }
+
+        this.logFile.println("Out:");
+        for (Value item : currentProgramState.out().getContents()) {
+            this.logFile.println(item.toString());
+        }
+
+        this.logFile.println("FileTable:");
+
+        for (Value filename : currentProgramState.fileTable().getContents().keySet()) {
+            this.logFile.println(filename.toString());
+        }
+
+        this.logFile.println("----------------------------------------\n");
         this.logFile.flush();
     }
 }
