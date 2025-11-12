@@ -25,4 +25,8 @@ public record AssignmentStatement
         symbolTable.updateValue(variableName, value);
         return state;
     }
+    @Override
+    public String toString() {
+        return variableName + " = " + expression +";";
+    }
 }

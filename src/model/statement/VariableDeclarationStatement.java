@@ -19,4 +19,8 @@ public record VariableDeclarationStatement(Type type, String variableName) imple
         symbolTable.declareVariable(type, variableName);
         return state;
     }
+    @Override
+    public String toString() {
+        return type + " " + variableName + ";";
+    }
 }

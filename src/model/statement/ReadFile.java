@@ -55,4 +55,8 @@ public record ReadFile(Expression expression, String var_name) implements Statem
 
         return state;
     }
+    @Override
+    public String toString() {
+        return "Read File: " + var_name + " = " + expression.toString() +";";
+    }
 }

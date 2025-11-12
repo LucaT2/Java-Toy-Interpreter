@@ -44,4 +44,8 @@ public record OpenRFile(Expression expression) implements Statement {
         }
         return state;
     }
+    @Override
+    public String toString() {
+        return "Open File: " + expression.toString() +";";
+    }
 }

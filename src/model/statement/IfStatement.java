@@ -23,4 +23,8 @@ public record IfStatement
 
         return state;
     }
+    @Override
+    public String toString() {
+        return "If: " + condition.toString() + " then " + thenStatement.toString() + " else " + elseStatement.toString();
+    }
 }

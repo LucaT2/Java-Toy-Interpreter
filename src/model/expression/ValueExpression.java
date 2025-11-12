@@ -9,4 +9,8 @@ public record ValueExpression(Value value) implements Expression {
     public Value evaluate(SymbolTable symbolTable) {
         return value;
     }
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 }

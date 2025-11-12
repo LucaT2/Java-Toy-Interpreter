@@ -14,4 +14,8 @@ public record VariableExpression(
         }
         return symbolTable.LookUp(variableName);
     }
+    @Override
+    public String toString() {
+        return variableName;
+    }
 }

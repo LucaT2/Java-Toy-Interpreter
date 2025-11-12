@@ -14,4 +14,8 @@ public record CompoundStatement
 
         return state;
     }
+    @Override
+    public String toString() {
+        return first.toString() + "\n" + second.toString();
+    }
 }

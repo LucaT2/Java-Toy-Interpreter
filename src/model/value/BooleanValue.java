@@ -13,5 +13,9 @@ public record BooleanValue(boolean value) implements Value {
     public Value getValue() {
         return new BooleanValue(value);
     }
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
 
 }

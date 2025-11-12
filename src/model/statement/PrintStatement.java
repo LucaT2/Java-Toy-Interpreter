@@ -13,4 +13,8 @@ public record PrintStatement(Expression expression) implements Statement {
 
         return state;
     }
+    @Override
+    public String toString() {
+        return "Print(" + expression.toString()+");";
+    }
 }

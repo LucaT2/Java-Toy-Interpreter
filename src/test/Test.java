@@ -53,7 +53,7 @@ public class Test {
             System.out.println("Program executed successfully!");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            e.printStackTrace();
+
         }
     }
     

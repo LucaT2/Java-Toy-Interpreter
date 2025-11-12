@@ -40,4 +40,8 @@ public record ArithmeticExpression(
         if (rightInt == 0) throw new DivideByZeroException();
         return leftInt / rightInt;
     }
+    @Override
+    public String toString() {
+        return leftOperand.toString() + " " + operator + " " + rightOperand.toString();
+    }
 }
