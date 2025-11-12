@@ -34,6 +34,6 @@ public record CloseRFile(Expression expression) implements Statement {
     }
     @Override
     public String toString() {
-        return "Close File: " + expression.toString() +";";
+        return "Close (" + expression.toString() +");";
     }
 }
