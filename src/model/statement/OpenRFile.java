@@ -3,6 +3,7 @@ package model.statement;
 import model.Type;
 import model.exception.InvalidFileExpression;
 import model.expression.Expression;
+import model.value.StringValue;
 import model.value.Value;
 import state.ProgramState;
 
@@ -22,13 +23,21 @@ public record OpenRFile(Expression expression) implements Statement {
         if (state.fileTable().fileExists(filename)) {
             throw new InvalidFileExpression("File already exists: " + filename.getType());
         }
-        String filePath = filename.getValue().toString();
+        
+        // Extract the actual string value properly
+        String filePath;
+        if (filename instanceof StringValue stringValue) {
+            filePath = stringValue.value();
+        } else {
+            filePath = filename.getValue().toString();
+        }
+        
         try{
             BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
             state.fileTable().addFile(filename, bufferedReader);
         }
         catch (FileNotFoundException e){
-            throw new InvalidFileExpression("File not found: " + filename.getValue());
+            throw new InvalidFileExpression("File not found: " + filePath);
         }
         catch (IOException e){
             throw new InvalidFileExpression("Could not open file due to IO error: " + filePath);

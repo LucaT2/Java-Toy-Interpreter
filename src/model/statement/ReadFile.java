@@ -11,6 +11,7 @@ import model.value.Value;
 import state.ProgramState;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 
 public record ReadFile(Expression expression, String var_name) implements Statement {
 
@@ -27,23 +28,29 @@ public record ReadFile(Expression expression, String var_name) implements Statem
         if (variable.getType() != Type.INTEGER) {
             throw new InvalidTypeException("Variable " + var_name + " is not a number");
         }
+        
+        Value filenameValue = expression.evaluate(state.symbolTable());
+        BufferedReader fileReader = state.fileTable().lookUp(filenameValue);
+        if (fileReader == null){
+            throw new InvalidFileExpression("File is not opened: " + filenameValue);
+        }
+        
         try {
-            BufferedReader fileReader = state.fileTable().lookUp(variable);
-            if (fileReader == null){
-                throw new VariableNotDefinedException();
-            }
-            String line;
-            line = fileReader.readLine();
-            if (line == null){
-                variable = new IntegerValue(0);
+            String line = fileReader.readLine();
+            IntegerValue newValue;
+            if (line == null || line.trim().isEmpty()){
+                newValue = new IntegerValue(0);
             }
             else{
-                variable = new IntegerValue(Integer.parseInt(line));
+                newValue = new IntegerValue(Integer.parseInt(line.trim()));
             }
-            state.symbolTable().updateValue(var_name, variable);
+            state.symbolTable().updateValue(var_name, newValue);
         }
-        catch (Exception e) {
-            throw new InvalidFileExpression("Cannot read file");
+        catch (IOException e) {
+            throw new InvalidFileExpression("IO Error reading file: " + e.getMessage());
+        }
+        catch (NumberFormatException e) {
+            throw new InvalidFileExpression("Invalid number format in file: " + e.getMessage());
         }
 
         return state;
