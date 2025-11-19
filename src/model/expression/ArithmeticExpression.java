@@ -1,6 +1,5 @@
 package model.expression;
 
-import model.Type;
 import model.exception.DivideByZeroException;
 import model.exception.InvalidTypeException;
 import model.exception.UnknownOperatorException;

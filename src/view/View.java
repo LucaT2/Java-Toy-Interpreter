@@ -1,15 +1,13 @@
 package view;
 
 import controller.Controller;
-import model.Type;
+import model.types.Type;
 import model.expression.ArithmeticExpression;
 import model.expression.ValueExpression;
 import model.expression.VariableExpression;
 import model.statement.*;
 import model.value.BooleanValue;
 import model.value.IntegerValue;
-import repository.Repository;
-import state.*;
 
 import java.util.Scanner;
 

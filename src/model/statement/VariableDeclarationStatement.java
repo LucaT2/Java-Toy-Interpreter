@@ -1,8 +1,7 @@
 package model.statement;
 
-import model.Type;
+import model.types.Type;
 import model.exception.VariableAlreadyDefinedException;
-import model.exception.VariableNotDefinedException;
 import state.ProgramState;
 import state.SymbolTable;
 

@@ -1,11 +1,10 @@
 package model.statement;
 
-import model.Type;
+import model.types.Type;
 import model.exception.InvalidFileExpression;
 import model.exception.InvalidTypeException;
 import model.exception.VariableNotDefinedException;
 import model.expression.Expression;
-import model.expression.VariableExpression;
 import model.value.IntegerValue;
 import model.value.Value;
 import state.ProgramState;

@@ -1,6 +1,6 @@
 package model.statement;
 
-import model.Type;
+import model.types.Type;
 import model.exception.InvalidFileExpression;
 import model.exception.InvalidTypeException;
 import model.value.Value;

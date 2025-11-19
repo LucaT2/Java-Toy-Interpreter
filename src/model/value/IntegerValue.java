@@ -1,6 +1,6 @@
 package model.value;
 
-import model.Type;
+import model.types.Type;
 
 public record IntegerValue(int value) implements Value {
 

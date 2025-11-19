@@ -1,7 +1,7 @@
 package test;
 
 
-import model.Type;
+import model.types.Type;
 import model.expression.ValueExpression;
 import model.expression.VariableExpression;
 import controller.Controller;

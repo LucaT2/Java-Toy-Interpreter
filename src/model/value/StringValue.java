@@ -1,6 +1,6 @@
 package model.value;
 
-import model.Type;
+import model.types.Type;
 
 public record StringValue(String value) implements Value {
     @Override

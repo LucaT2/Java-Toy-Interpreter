@@ -1,6 +1,6 @@
 package state;
 
-import model.Type;
+import model.types.Type;
 import model.value.Value;
 import state.exceptions.VariableNotInTableException;
 

@@ -1,7 +1,7 @@
 package view;
 
 import controller.Controller;
-import model.Type;
+import model.types.Type;
 import model.expression.ArithmeticExpression;
 import model.expression.ValueExpression;
 import model.expression.VariableExpression;
