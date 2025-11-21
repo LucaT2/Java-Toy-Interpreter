@@ -26,6 +26,11 @@ public class Controller {
         while (!programState.executionStack().isEmpty()){
             programState = oneStep(programState);
             repository.logProgramStateExecution();
+            GarbageCollector garbageCollector = new GarbageCollectorMap();
+            programState.heap().setContent(garbageCollector.safeGarbageCollector(
+                    garbageCollector.getAddressesFromSymTable(programState.symbolTable().getContents().values()
+                    ), programState.heap().getHeapMap()));
+            repository.logProgramStateExecution();
         }
     }
     public void addProgramState(ProgramState programState){
@@ -43,7 +48,8 @@ public class Controller {
                 executionStack,
                 new MapSymbolTable(),
                 new ListOut(),
-                new MapFileTable());
+                new MapFileTable(),
+                new HeapMap());
         addProgramState(programState);
         allStep();
         removeProgramState(programState);

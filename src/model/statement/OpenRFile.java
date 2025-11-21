@@ -15,7 +15,7 @@ import java.io.IOException;
 public record OpenRFile(Expression expression) implements Statement {
     @Override
     public ProgramState execute(ProgramState state) {
-        Value filename = expression.evaluate(state.symbolTable());
+        Value filename = expression.evaluate(state.symbolTable(), state.heap());
         if (filename.getType() != Type.STRING) {
             throw new InvalidFileExpression("Expected a string for opening the file" +
                     ", got " + filename.getType());

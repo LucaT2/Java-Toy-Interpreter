@@ -14,7 +14,7 @@ import java.io.IOException;
 public record CloseRFile(Expression expression) implements Statement {
     @Override
     public ProgramState execute(ProgramState state) {
-        Value filename = expression.evaluate(state.symbolTable());
+        Value filename = expression.evaluate(state.symbolTable(), state.heap());
         if (filename.getType()!= Type.STRING){
             throw new InvalidTypeException("Filename for closing must be a string");
         }

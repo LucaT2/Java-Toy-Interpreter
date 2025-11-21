@@ -14,6 +14,10 @@ public interface Type {
         public Value getDefaultValue() {
             return new IntegerValue(0);
         }
+        @Override
+        public java.lang.String toString() {
+            return "int";
+        }
     }
 
     record Boolean() implements Type {
@@ -21,12 +25,20 @@ public interface Type {
         public Value getDefaultValue() {
             return new BooleanValue(false);
         }
+        @Override
+        public java.lang.String toString() {
+            return "boolean";
+        }
     }
 
     record String() implements Type {
         @Override
         public Value getDefaultValue() {
             return new StringValue("");
+        }
+        @Override
+        public java.lang.String toString() {
+            return "string";
         }
     }
 

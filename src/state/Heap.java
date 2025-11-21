@@ -1,10 +1,17 @@
 package state;
 
 import model.types.Type;
+import model.value.Value;
+
+import java.util.Map;
 
 public interface Heap {
-    void add(int address, int value);
-    Type get(int address);
+    int add(Value value);
+    Value lookUp(int address);
     void remove(int address);
+    void update(int address, Value value);
+    Map<Integer, Value> getHeapMap();
+
+    void setContent(Map<Integer, Value> heapMap);
 
 }

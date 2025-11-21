@@ -16,7 +16,7 @@ public record ReadFile(Expression expression, String var_name) implements Statem
 
     @Override
     public ProgramState execute(ProgramState state) {
-        Value filename = expression.evaluate(state.symbolTable());
+        Value filename = expression.evaluate(state.symbolTable(), state.heap());
         if (filename.getType() != Type.STRING) {
             throw new InvalidTypeException("Cannot read file because type is not a string");
         }
@@ -28,7 +28,7 @@ public record ReadFile(Expression expression, String var_name) implements Statem
             throw new InvalidTypeException("Variable " + var_name + " is not a number");
         }
         
-        Value filenameValue = expression.evaluate(state.symbolTable());
+        Value filenameValue = expression.evaluate(state.symbolTable(), state.heap());
         BufferedReader fileReader = state.fileTable().lookUp(filenameValue);
         if (fileReader == null){
             throw new InvalidFileExpression("File is not opened: " + filenameValue);

@@ -60,7 +60,11 @@ public class ListRepository implements Repository {
         for (Value filename : currentProgramState.fileTable().getContents().keySet()) {
             this.logFile.println(filename.toString());
         }
-
+        this.logFile.println("HeapTable:");
+        for (var val:currentProgramState.heap().getHeapMap().keySet()){
+            this.logFile.print(val.toString());
+            this.logFile.println(" --> " + currentProgramState.heap().lookUp(val).toString());
+        }
         this.logFile.println("----------------------------------------\n");
         this.logFile.flush();
     }
