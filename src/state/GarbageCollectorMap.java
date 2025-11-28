@@ -14,7 +14,7 @@ public class GarbageCollectorMap implements GarbageCollector{
     
 
     public Map<Integer, Value> safeGarbageCollector(List<Integer> symTableAddresses, Map<Integer, Value> heapMap){
-        // Get all reachable addresses (transitive closure)
+        // Get all reachable addresses
         List<Integer> reachableAddresses = getReachableAddresses(symTableAddresses, heapMap);
         
         return heapMap.entrySet().stream()

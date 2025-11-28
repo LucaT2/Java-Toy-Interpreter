@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class HeapMap implements Heap{
     private final Map<Integer, Value>  heapMap = new HashMap<>();
-    private static int currentAddress = 1;
+    private int currentAddress = 1;
 
     private synchronized int getNewAddress(){
         return currentAddress++;
