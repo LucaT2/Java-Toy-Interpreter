@@ -22,15 +22,15 @@ public class Controller {
     }
     public void allStep(){
         ProgramState programState = repository.getCurrentProgramState();
-        repository.logProgramStateExecution();
+        repository.logProgramStateExecution(programState);
         while (!programState.executionStack().isEmpty()){
             programState = oneStep(programState);
-            repository.logProgramStateExecution();
+            repository.logProgramStateExecution(programState);
             GarbageCollector garbageCollector = new GarbageCollectorMap();
             programState.heap().setContent(garbageCollector.safeGarbageCollector(
                     garbageCollector.getAddressesFromSymTable(programState.symbolTable().getContents().values()
                     ), programState.heap().getHeapMap()));
-            repository.logProgramStateExecution();
+            repository.logProgramStateExecution(programState);
         }
     }
     public void addProgramState(ProgramState programState){

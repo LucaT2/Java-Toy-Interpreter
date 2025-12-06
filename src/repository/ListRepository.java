@@ -36,8 +36,7 @@ public class ListRepository implements Repository {
         }
         programStates.remove(programState);
     }
-    public void logProgramStateExecution(){
-        ProgramState currentProgramState = getCurrentProgramState();
+    public void logProgramStateExecution(ProgramState currentProgramState){
 
         this.logFile.println("ExeStack:");
         List<Statement> stackItems = new ArrayList<>(currentProgramState.executionStack().getContents());
@@ -67,5 +66,16 @@ public class ListRepository implements Repository {
         }
         this.logFile.println("----------------------------------------\n");
         this.logFile.flush();
+    }
+
+    @Override
+    public List<ProgramState> getProgramStates() {
+        return programStates;
+    }
+
+    @Override
+    public void setProgramList(List<ProgramState> programStates) {
+        this.programStates.clear();
+        this.programStates.addAll(programStates);
     }
 }
