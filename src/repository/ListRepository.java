@@ -24,9 +24,9 @@ public class ListRepository implements Repository {
             throw new FileRepositoryException(e.getMessage());
         }
     }
-    public ProgramState getCurrentProgramState(){
-        return programStates.getFirst();
-    }
+//    public ProgramState getCurrentProgramState(){
+//        return programStates.getFirst();
+//    }
     public void addProgramState(ProgramState programState){
         programStates.add(programState);
     }

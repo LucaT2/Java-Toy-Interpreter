@@ -6,7 +6,7 @@ import state.ProgramState;
 import java.util.List;
 
 public interface Repository {
-    ProgramState getCurrentProgramState();
+    //ProgramState getCurrentProgramState();
     void addProgramState(ProgramState programState);
     void removeProgramState(ProgramState programState);
     void logProgramStateExecution(ProgramState programState);

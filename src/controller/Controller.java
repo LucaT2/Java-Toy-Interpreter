@@ -5,34 +5,52 @@ import repository.Repository;
 import state.*;
 import state.exceptions.EmptyStackException;
 
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class Controller {
     private final Repository repository;
+    ExecutorService executorService;
     public Controller(Repository repository) {
         this.repository = repository;
     }
-    public ProgramState oneStep(ProgramState state){
-        ExecutionStack executionStack = state.executionStack();
-        if (executionStack.isEmpty()){
-            throw new EmptyStackException("Cannot execute empty program state stack");
+
+    public void allStep() throws InterruptedException {
+        executorService = Executors.newFixedThreadPool(2);
+        List<ProgramState> programList = removeCompletedPrograms(repository.getProgramStates());
+        while(!programList.isEmpty()){
+            oneStepForAllPrograms(programList);
+            programList = removeCompletedPrograms(repository.getProgramStates());
         }
-        Statement statement = executionStack.pop();
-        state = statement.execute(state);
-        return state;
-        //IO.println(state.toString());
+        executorService.shutdown();
+        repository.setProgramList(programList);
     }
-    public void allStep(){
-        ProgramState programState = repository.getCurrentProgramState();
-        repository.logProgramStateExecution(programState);
-        while (!programState.executionStack().isEmpty()){
-            programState = oneStep(programState);
-            repository.logProgramStateExecution(programState);
-            GarbageCollector garbageCollector = new GarbageCollectorMap();
-            programState.heap().setContent(garbageCollector.safeGarbageCollector(
-                    garbageCollector.getAddressesFromSymTable(programState.symbolTable().getContents().values()
-                    ), programState.heap().getHeapMap()));
-            repository.logProgramStateExecution(programState);
-        }
-    }
+    void oneStepForAllPrograms(List<ProgramState> programStates) throws InterruptedException {
+        programStates.forEach(repository::logProgramStateExecution);
+    
+    List<Callable<ProgramState>> callList = 
+            programStates.stream()
+                .map(ps -> (Callable<ProgramState>) ps::oneStep)
+                .toList();
+    
+    List<ProgramState> newProgramsList = executorService.invokeAll(callList).stream()
+            .map(future -> {
+                try {
+                    return future.get();
+                } catch (Exception e) {
+                    IO.println(e.getMessage());
+                    return null;
+                }
+            })
+            .filter(p -> p != null)
+            .toList();
+    
+    programStates.addAll(newProgramsList);
+    programStates.forEach(repository::logProgramStateExecution);
+    repository.setProgramList(programStates);
+}
     public void addProgramState(ProgramState programState){
         repository.addProgramState(programState);
     }
@@ -41,7 +59,7 @@ public class Controller {
         repository.removeProgramState(programState);
     }
 
-    public void runAll(Statement statement){
+    public void runAll(Statement statement) throws InterruptedException {
         ExecutionStack executionStack = new ListExecutionStack();
         executionStack.push(statement);
         ProgramState programState = new ProgramState(
@@ -53,5 +71,8 @@ public class Controller {
         addProgramState(programState);
         allStep();
         removeProgramState(programState);
+    }
+    List<ProgramState> removeCompletedPrograms(List<ProgramState> programStates){
+        return programStates.stream().filter(ps->ps.executionStack().isEmpty()).toList();
     }
 }

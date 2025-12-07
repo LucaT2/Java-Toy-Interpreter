@@ -15,7 +15,7 @@ public record ProgramState(
     Boolean isNotCompleted(){
         return !executionStack.isEmpty();
     }
-    ProgramState oneStep(){
+    public ProgramState oneStep(){
         if (executionStack.isEmpty()){
             throw new EmptyStackException("Cannot execute empty program state stack");
         }
