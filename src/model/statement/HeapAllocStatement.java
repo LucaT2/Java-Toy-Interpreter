@@ -2,11 +2,14 @@ package model.statement;
 
 import model.exception.InvalidTypeException;
 import model.exception.VariableNotDefinedException;
+import model.types.RefType;
 import model.types.Type;
 import model.value.RefValue;
 import model.value.Value;
 import state.ProgramState;
 import model.expression.Expression;
+
+import java.util.Map;
 
 public record HeapAllocStatement(String var_name, Expression expression)  implements Statement{
     @Override
@@ -28,6 +31,19 @@ public record HeapAllocStatement(String var_name, Expression expression)  implem
         return null;
 
     }
+
+    @Override
+    public Map<String, Type> typeCheck(Map<String, Type> typeEnv) throws Exception {
+        Type typevar = typeEnv.get(var_name);
+        Type typexp = expression.typecheck(typeEnv);
+        if (typevar.equals(new RefType(typexp))){
+            return typeEnv;
+        }
+        else{
+            throw new InvalidTypeException("Alloc Statement: Right hand side and left have different types");
+        }
+    }
+
     @Override
     public String toString() {
         return "HeapAlloc(" + var_name + ", " + expression.toString() + ");";

@@ -11,6 +11,8 @@ import repository.ListRepository;
 import repository.Repository;
 import state.*;
 
+import java.util.HashMap;
+
 class Interpreter {
     public static void main(String[] args) {
         Statement ex1 = new CompoundStatement(
@@ -104,7 +106,7 @@ class Interpreter {
                         )
                 )
         );
-        
+
         ExecutionStack executionStack4 = new ListExecutionStack();
         executionStack4.push(ex4);
         ProgramState prg4 = new ProgramState(
@@ -151,7 +153,18 @@ class Interpreter {
                         )
                 )
         );
-        
+        try {
+            ex1.typeCheck(new HashMap<String, Type>());
+            ex2.typeCheck(new HashMap<String, Type>());
+            ex3.typeCheck(new HashMap<String, Type>());
+            ex4.typeCheck(new HashMap<String, Type>());
+            ex5.typeCheck(new HashMap<String, Type>());
+            IO.println("All typecheckers for all examples passed");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            IO.println(e.getMessage());
+        }
         ExecutionStack executionStack5 = new ListExecutionStack();
         executionStack5.push(ex5);
         ProgramState prg5 = new ProgramState(

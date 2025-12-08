@@ -11,6 +11,7 @@ import state.ProgramState;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Map;
 
 public record ReadFile(Expression expression, String var_name) implements Statement {
 
@@ -54,6 +55,17 @@ public record ReadFile(Expression expression, String var_name) implements Statem
 
         return null;
     }
+
+    @Override
+    public Map<String, Type> typeCheck(Map<String, Type> typeEnv) throws Exception {
+        Type vartype =  typeEnv.get(var_name);
+        Type exprtype = expression.typecheck(typeEnv);
+        if (vartype.equals(exprtype)) {
+            return typeEnv;
+        }
+        else throw new InvalidTypeException("Cannot read file because type is not a string");
+    }
+
     @Override
     public String toString() {
         return var_name + " = readFile(" + expression.toString() +");";

@@ -10,6 +10,7 @@ import state.ProgramState;
 import state.exceptions.AddressNotInHeap;
 import model.expression.Expression;
 
+import java.util.Map;
 import java.util.Objects;
 
 public record HeapWriteStatement(String var_name, Expression expression)  implements Statement{
@@ -37,6 +38,25 @@ public record HeapWriteStatement(String var_name, Expression expression)  implem
         }
         state.heap().update(address, val_expression);
         return null;
+    }
+
+    @Override
+    public Map<String, Type> typeCheck(Map<String, Type> typeEnv) throws Exception {
+        Type typevar = typeEnv.get(var_name);
+        Type typexp = expression.typecheck(typeEnv);
+
+
+        if (typevar instanceof RefType) {
+            RefType refType = (RefType) typevar;
+            if (refType.inner().equals(typexp)) {
+                return typeEnv;
+            } else {
+                throw new InvalidTypeException("Heap write: The expression type (" + typexp +
+                        ") does not match the reference's inner type (" + refType.inner() + ")");
+            }
+        } else {
+            throw new InvalidTypeException("Heap write: Variable '" + var_name + "' is not a Reference Type");
+        }
     }
     @Override
     public String toString() {

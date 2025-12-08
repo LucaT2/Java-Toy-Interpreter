@@ -7,6 +7,8 @@ import model.value.Value;
 import state.ProgramState;
 import model.expression.Expression;
 
+import java.util.Map;
+
 public record WhileStatement(Expression expression, Statement statement) implements Statement {
     
     @Override
@@ -28,7 +30,12 @@ public record WhileStatement(Expression expression, Statement statement) impleme
 
         return null;
     }
-    
+
+    @Override
+    public Map<String, Type> typeCheck(Map<String, Type> typeEnv) throws Exception {
+        return statement.typeCheck(typeEnv);
+    }
+
     @Override
     public String toString() {
         return "while(" + expression.toString() + ") " + statement.toString();

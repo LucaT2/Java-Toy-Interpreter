@@ -10,6 +10,7 @@ import model.expression.Expression;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Map;
 
 public record CloseRFile(Expression expression) implements Statement {
     @Override
@@ -32,6 +33,18 @@ public record CloseRFile(Expression expression) implements Statement {
         }
         return null;
     }
+
+    @Override
+    public Map<String, Type> typeCheck(Map<String, Type> typeEnv) throws Exception {
+        Type typeExp = expression.typecheck(typeEnv);
+
+        if (typeExp.equals(new Type.String())) {
+            return typeEnv;
+        } else {
+            throw new InvalidTypeException("The closeRFile statement requires a string expression");
+        }
+    }
+
     @Override
     public String toString() {
         return "Close (" + expression.toString() +");";
