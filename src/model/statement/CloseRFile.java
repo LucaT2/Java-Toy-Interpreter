@@ -30,7 +30,7 @@ public record CloseRFile(Expression expression) implements Statement {
         else{
             throw new InvalidFileExpression("Closing Filename not in file table");
         }
-        return state;
+        return null;
     }
     @Override
     public String toString() {

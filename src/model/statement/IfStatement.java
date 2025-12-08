@@ -20,7 +20,7 @@ public record IfStatement
 
         state.executionStack().push(chosenStatement);
 
-        return state;
+        return null;
     }
     @Override
     public String toString() {

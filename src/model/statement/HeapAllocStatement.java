@@ -25,7 +25,7 @@ public record HeapAllocStatement(String var_name, Expression expression)  implem
         else{
             throw new VariableNotDefinedException();
         }
-        return state;
+        return null;
 
     }
     @Override

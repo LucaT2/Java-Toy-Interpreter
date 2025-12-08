@@ -52,7 +52,7 @@ public record ReadFile(Expression expression, String var_name) implements Statem
             throw new InvalidFileExpression("Invalid number format in file: " + e.getMessage());
         }
 
-        return state;
+        return null;
     }
     @Override
     public String toString() {

@@ -12,6 +12,12 @@ public record StringValue(String value) implements Value {
     public Value getValue() {
         return new StringValue(value);
     }
+
+    @Override
+    public Value deepCopy() {
+        return new StringValue(value);
+    }
+
     @Override
     public String toString() {
         return "\"" + value + "\"";

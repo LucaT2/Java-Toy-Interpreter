@@ -37,7 +37,8 @@ public class ListRepository implements Repository {
         programStates.remove(programState);
     }
     public void logProgramStateExecution(ProgramState currentProgramState){
-
+        this.logFile.println("Id: ");
+        this.logFile.println(currentProgramState.id());
         this.logFile.println("ExeStack:");
         List<Statement> stackItems = new ArrayList<>(currentProgramState.executionStack().getContents());
         for (Statement item : stackItems) {

@@ -9,16 +9,14 @@ import state.SymbolTable;
 public record ForkStatement(Statement statement) implements Statement{
     @Override
     public ProgramState execute(ProgramState state) {
-        ExecutionStack executionStack = new ListExecutionStack();
-        executionStack.push(statement);
-        
-        SymbolTable clonedSymbolTable = new MapSymbolTable();
-        state.symbolTable().getContents().forEach(clonedSymbolTable::updateValue);
+        ExecutionStack newStack = new ListExecutionStack();
+        newStack.push(statement);
+        SymbolTable newSymTable = new MapSymbolTable();
 
-        return new ProgramState(executionStack,
-                clonedSymbolTable,
-                state.out(),
-                state.fileTable(),
-                state.heap());
+        for (var entry : state.symbolTable().getContents().entrySet()) {
+            newSymTable.updateValue(entry.getKey(), entry.getValue().deepCopy());
+        }
+
+        return new ProgramState(newStack, newSymTable, state.out(), state.fileTable(), state.heap());
     }
 }

@@ -26,7 +26,7 @@ public record WhileStatement(Expression expression, Statement statement) impleme
             state.executionStack().push(statement);
         }
 
-        return state;
+        return null;
     }
     
     @Override

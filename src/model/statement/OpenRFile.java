@@ -42,7 +42,7 @@ public record OpenRFile(Expression expression) implements Statement {
         catch (IOException e){
             throw new InvalidFileExpression("Could not open file due to IO error: " + filePath);
         }
-        return state;
+        return null;
     }
     @Override
     public String toString() {

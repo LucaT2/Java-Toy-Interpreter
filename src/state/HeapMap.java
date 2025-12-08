@@ -7,17 +7,17 @@ import state.exceptions.AddressNotInHeap;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class HeapMap implements Heap{
-    private final Map<Integer, Value>  heapMap = new HashMap<>();
-    private int currentAddress = 1;
+    private final Map<Integer, Value> heapMap = new ConcurrentHashMap<>();
+    private final AtomicInteger currentAddress = new AtomicInteger(1);
 
-    private synchronized int getNewAddress(){
-        return currentAddress++;
-    }
     @Override
     public int add(Value value) {
-        int addr = getNewAddress();
+        // incrementAndGet is atomic (safe)
+        int addr = currentAddress.getAndIncrement();
         heapMap.put(addr, value);
         return addr;
     }

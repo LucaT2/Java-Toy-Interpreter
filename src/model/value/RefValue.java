@@ -20,6 +20,11 @@ public record RefValue(int address, Type locationType) implements Value {
         return new RefValue(address,locationType);
     }
 
+    @Override
+    public Value deepCopy() {
+        return new RefValue(address,locationType);
+    }
+
     public int getAddress(){
         return address;
     }

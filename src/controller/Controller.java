@@ -1,14 +1,18 @@
 package controller;
 
 import model.statement.Statement;
+import model.value.Value;
 import repository.Repository;
 import state.*;
 import state.exceptions.EmptyStackException;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class Controller {
     private final Repository repository;
@@ -21,36 +25,54 @@ public class Controller {
         executorService = Executors.newFixedThreadPool(2);
         List<ProgramState> programList = removeCompletedPrograms(repository.getProgramStates());
         while(!programList.isEmpty()){
+            GarbageCollectorMap garbageCollectorMap = new GarbageCollectorMap();
+            List<Value> allSymTableValues = programList.stream()
+                    .flatMap(ps -> ps.symbolTable().getContents().values().stream())
+                    .collect(Collectors.toList());
+            List<Integer> symTableAddresses = garbageCollectorMap.getAddressesFromSymTable(allSymTableValues);
+
+            if (!programList.isEmpty()) {
+                Heap heap = programList.get(0).heap();
+                Map<Integer, Value> newHeapMap = garbageCollectorMap.safeGarbageCollector(
+                        symTableAddresses,
+                        heap.getHeapMap()
+                );
+                heap.setContent(newHeapMap);
+            }
+
             oneStepForAllPrograms(programList);
-            programList = removeCompletedPrograms(repository.getProgramStates());
+            programList = removeCompletedPrograms(programList);
         }
         executorService.shutdown();
         repository.setProgramList(programList);
     }
+
+
+
     void oneStepForAllPrograms(List<ProgramState> programStates) throws InterruptedException {
         programStates.forEach(repository::logProgramStateExecution);
-    
-    List<Callable<ProgramState>> callList = 
-            programStates.stream()
-                .map(ps -> (Callable<ProgramState>) ps::oneStep)
+
+        List<Callable<ProgramState>> callList =
+                programStates.stream()
+                    .map(ps -> (Callable<ProgramState>) ps::oneStep)
+                    .toList();
+
+        List<ProgramState> newProgramsList = executorService.invokeAll(callList).stream()
+                .map(future -> {
+                    try {
+                        return future.get();
+                    } catch (Exception e) {
+                        IO.println(e.getMessage());
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
                 .toList();
-    
-    List<ProgramState> newProgramsList = executorService.invokeAll(callList).stream()
-            .map(future -> {
-                try {
-                    return future.get();
-                } catch (Exception e) {
-                    IO.println(e.getMessage());
-                    return null;
-                }
-            })
-            .filter(p -> p != null)
-            .toList();
-    
-    programStates.addAll(newProgramsList);
-    programStates.forEach(repository::logProgramStateExecution);
-    repository.setProgramList(programStates);
-}
+
+        programStates.addAll(newProgramsList);
+        programStates.forEach(repository::logProgramStateExecution);
+        repository.setProgramList(programStates);
+    }
     public void addProgramState(ProgramState programState){
         repository.addProgramState(programState);
     }
@@ -70,9 +92,9 @@ public class Controller {
                 new HeapMap());
         addProgramState(programState);
         allStep();
-        removeProgramState(programState);
+        //removeProgramState(programState);
     }
     List<ProgramState> removeCompletedPrograms(List<ProgramState> programStates){
-        return programStates.stream().filter(ps->ps.executionStack().isEmpty()).toList();
+        return programStates.stream().filter(ps -> !ps.executionStack().isEmpty()).collect(Collectors.toList());
     }
 }

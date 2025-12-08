@@ -36,7 +36,7 @@ public record HeapWriteStatement(String var_name, Expression expression)  implem
             throw new InvalidTypeException("Type mismatch");
         }
         state.heap().update(address, val_expression);
-        return state;
+        return null;
     }
     @Override
     public String toString() {
