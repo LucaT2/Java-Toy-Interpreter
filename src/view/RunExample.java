@@ -1,7 +1,6 @@
 package view;
 
 import controller.Controller;
-
 public class RunExample extends Command{
     private Controller controller;
     public RunExample(String key, String description, Controller controller){
@@ -14,7 +13,7 @@ public class RunExample extends Command{
             controller.allStep();
         }
         catch (Exception e){
-            IO.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 }

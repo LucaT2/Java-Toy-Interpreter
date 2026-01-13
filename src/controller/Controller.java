@@ -49,7 +49,36 @@ public class Controller {
 
 
 
-    void oneStepForAllPrograms(List<ProgramState> programStates) throws InterruptedException {
+    public void oneStepForAllPrograms() throws InterruptedException {
+        executorService = Executors.newFixedThreadPool(2);
+        List<ProgramState> programList = removeCompletedPrograms(repository.getProgramStates());
+        if (!programList.isEmpty()) {
+            GarbageCollectorMap garbageCollectorMap = new GarbageCollectorMap();
+            List<Value> allSymTableValues = programList.stream()
+                    .flatMap(ps -> ps.symbolTable().getContents().values().stream())
+                    .collect(Collectors.toList());
+            List<Integer> symTableAddresses = garbageCollectorMap.getAddressesFromSymTable(allSymTableValues);
+
+            Heap heap = programList.get(0).heap();
+            Map<Integer, Value> newHeapMap = garbageCollectorMap.safeGarbageCollector(
+                    symTableAddresses,
+                    heap.getHeapMap()
+            );
+            heap.setContent(newHeapMap);
+
+            oneStepForAllPrograms(programList);
+            repository.setProgramList(programList);
+            programList = removeCompletedPrograms(repository.getProgramStates());
+        }
+        executorService.shutdown();
+        repository.setProgramList(programList);
+    }
+
+    public List<ProgramState> getProgramStates() {
+        return repository.getProgramStates();
+    }
+
+    public void oneStepForAllPrograms(List<ProgramState> programStates) throws InterruptedException {
         programStates.forEach(repository::logProgramStateExecution);
 
         List<Callable<ProgramState>> callList =
