@@ -22,8 +22,11 @@ public record VariableExpression(
 
     @Override
     public Type typecheck(Map<String, Type> typeEnv) throws Exception {
-        return typeEnv.get(variableName);
-    }
+        if (typeEnv.containsKey(variableName)) {
+            return typeEnv.get(variableName);
+        } else {
+            throw new Exception("Type Check Error: Variable " + variableName + " is not defined in the environment.");
+        }    }
 
     @Override
     public String toString() {
