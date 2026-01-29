@@ -9,7 +9,8 @@ public record ProgramState(
         SymbolTable symbolTable,
         Out out,
         FileTable fileTable,
-        Heap heap) {
+        Heap heap,
+        BarrierTable barrierTable) {
     
     private static int nextId = 1;
     
@@ -23,8 +24,9 @@ public record ProgramState(
             SymbolTable symbolTable,
             Out out,
             FileTable fileTable,
-            Heap heap) {
-        this(getNextId(), executionStack, symbolTable, out, fileTable, heap);
+            Heap heap,
+            BarrierTable barrierTable) {
+        this(getNextId(), executionStack, symbolTable, out, fileTable, heap, barrierTable);
     }
     
     Boolean isNotCompleted(){
@@ -46,6 +48,7 @@ public record ProgramState(
                "SymTable:\n" + symbolTable.toString() +
                "Out:\n" + out.toString() +
                "FileTable:\n" + fileTable.toString() +
-               "HeapTable:\n" + heap.toString();
+               "HeapTable:\n" + heap.toString() +
+                "BarrierTable:\n" + barrierTable.toString();
     }
 }
