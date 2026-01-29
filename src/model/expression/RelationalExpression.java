@@ -44,7 +44,7 @@ implements Expression{
         type2 = rightOperand.typecheck(typeEnv);
         if (type1.equals(new Type.Integer())){
             if (type2.equals(new Type.Integer())){
-                return new Type.Integer();
+                return new Type.Boolean();
             }
             else throw new InvalidTypeException("second operand is not an integer");
 
