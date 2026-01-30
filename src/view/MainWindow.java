@@ -207,7 +207,7 @@ public class MainWindow {
             exeStackView.setItems(FXCollections.emptyObservableList());
         }
 
-        //Barrier
+        //Barrier lets see the commit
         // Inside updateUI()
         if (!allProgramStates.isEmpty()) {
             // 1. Get the raw map from your state (adjust method names to match your implementation)
