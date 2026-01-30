@@ -3,3 +3,26 @@
 /workspace.xml
 # Editor-based HTTP Client requests
 /httpRequests/
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Build folders
+target/
+bin/
+out/
+
+# IntelliJ specific
+.idea/
+*.iml
