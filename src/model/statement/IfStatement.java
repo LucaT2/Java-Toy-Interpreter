@@ -31,7 +31,7 @@ public record IfStatement
     @Override
     public Map<String, Type> typeCheck(Map<String, Type> typeEnv) throws Exception {
         Type typeexp = condition.typecheck(typeEnv);
-        if(typeexp.equals(new Type.Boolean())){
+        if(typeexp instanceof Type.Boolean){
             thenStatement.typeCheck(new HashMap<>(typeEnv));
             elseStatement.typeCheck(new HashMap<>(typeEnv));
             return typeEnv;

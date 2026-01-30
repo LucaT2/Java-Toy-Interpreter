@@ -107,7 +107,95 @@ public class Interpreter extends Application { // Change to public and extend Ap
                 )
         );
 
-        java.util.List<Statement> programs = java.util.Arrays.asList(ex1, ex2, ex3, ex4, ex5);
+
+        Statement ex6 = new CompoundStatement(
+                new VariableDeclarationStatement(new RefType(Type.INTEGER), "a"),
+                new CompoundStatement(new VariableDeclarationStatement(new RefType(Type.INTEGER), "b"),
+                        new CompoundStatement(new VariableDeclarationStatement(Type.INTEGER, "v"),
+                                new CompoundStatement(new HeapAllocStatement("a", new ValueExpression(new IntegerValue(0))),
+                                        new CompoundStatement(new HeapAllocStatement("b", new ValueExpression(new IntegerValue(0))),
+                                                new CompoundStatement(new HeapWriteStatement("a", new ValueExpression(new IntegerValue(1))),
+                                                        new CompoundStatement(new HeapWriteStatement("b", new ValueExpression(new IntegerValue(2))),
+                                                                new CompoundStatement(
+                                                                        new ConditionalAssignmentStatement("v",
+                                                                                new RelationalExpression(new HeapReadExpression(new VariableExpression("a")), new HeapReadExpression(new VariableExpression("b")), "<"),
+                                                                                new ValueExpression(new IntegerValue(100)),
+                                                                                new ValueExpression(new IntegerValue(200))),
+                                                                        new CompoundStatement(new PrintStatement(new VariableExpression("v")),
+                                                                                new CompoundStatement(
+                                                                                        new ConditionalAssignmentStatement("v",
+                                                                                                new RelationalExpression(
+                                                                                                        new ArithmeticExpression(new HeapReadExpression(new VariableExpression("b")), new ValueExpression(new IntegerValue(2)), '-'),
+                                                                                                        new HeapReadExpression(new VariableExpression("a")),
+                                                                                                        ">"),
+                                                                                                new ValueExpression(new IntegerValue(100)),
+                                                                                                new ValueExpression(new IntegerValue(200))),
+                                                                                        new PrintStatement(new VariableExpression("v"))))))))))));
+
+        Statement ex7 = new CompoundStatement(
+                new VariableDeclarationStatement(new RefType(Type.INTEGER), "v1"),
+                new CompoundStatement(new VariableDeclarationStatement(new RefType(Type.INTEGER), "v2"),
+                        new CompoundStatement(new VariableDeclarationStatement(new RefType(Type.INTEGER), "v3"),
+                                new CompoundStatement(new VariableDeclarationStatement(Type.INTEGER, "cnt"),
+
+                                        new CompoundStatement(new HeapAllocStatement("v1", new ValueExpression(new IntegerValue(2))),
+                                                new CompoundStatement(new HeapAllocStatement("v2", new ValueExpression(new IntegerValue(3))),
+                                                        new CompoundStatement(new HeapAllocStatement("v3", new ValueExpression(new IntegerValue(4))),
+
+                                                                new CompoundStatement(new NewLatchStatement("cnt", new HeapReadExpression(new VariableExpression("v2"))),
+
+                                                                        new CompoundStatement(
+                                                                                new ForkStatement(
+                                                                                        new CompoundStatement(new HeapWriteStatement("v1", new ArithmeticExpression(new HeapReadExpression(new VariableExpression("v1")), new ValueExpression(new IntegerValue(10)), '*')),
+                                                                                                new CompoundStatement(new PrintStatement(new HeapReadExpression(new VariableExpression("v1"))),
+                                                                                                        new CountDownStatement("cnt")))
+                                                                                ),
+
+                                                                                new CompoundStatement(
+                                                                                        new ForkStatement(
+                                                                                                new CompoundStatement(new HeapWriteStatement("v2", new ArithmeticExpression(new HeapReadExpression(new VariableExpression("v2")), new ValueExpression(new IntegerValue(10)), '*')),
+                                                                                                        new CompoundStatement(new PrintStatement(new HeapReadExpression(new VariableExpression("v2"))),
+                                                                                                                new CountDownStatement("cnt")))
+                                                                                        ),
+
+                                                                                        new CompoundStatement(
+                                                                                                new ForkStatement(
+                                                                                                        new CompoundStatement(new HeapWriteStatement("v3", new ArithmeticExpression(new HeapReadExpression(new VariableExpression("v3")), new ValueExpression(new IntegerValue(10)), '*')),
+                                                                                                                new CompoundStatement(new PrintStatement(new HeapReadExpression(new VariableExpression("v3"))),
+                                                                                                                        new CountDownStatement("cnt")))
+                                                                                                ),
+
+                                                                                                new CompoundStatement(new AwaitStatement("cnt"),
+                                                                                                        new CompoundStatement(new PrintStatement(new ValueExpression(new IntegerValue(100))),
+                                                                                                                new CompoundStatement(new CountDownStatement("cnt"),
+                                                                                                                        new PrintStatement(new ValueExpression(new IntegerValue(100))))))
+                                                                                        )
+                                                                                )
+                                                                        )
+                                                                )
+                                                        )))
+                                )))
+        );
+
+        try {
+            ex1.typeCheck(new HashMap<String, Type>());
+            ex2.typeCheck(new HashMap<String, Type>());
+            ex3.typeCheck(new HashMap<String, Type>());
+            ex4.typeCheck(new HashMap<String, Type>());
+            ex5.typeCheck(new HashMap<String, Type>());
+            ex6.typeCheck(new HashMap<String, Type>());
+            ex7.typeCheck(new HashMap<String, Type>());
+
+
+            IO.println("All typecheckers for all examples passed");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            IO.println(e.getMessage());
+        }
+
+
+        java.util.List<Statement> programs = java.util.Arrays.asList(ex1, ex2, ex3, ex4, ex5, ex6, ex7);
         SelectWindow selectWindow = new SelectWindow(programs);
         selectWindow.show();
     }
