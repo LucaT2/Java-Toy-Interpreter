@@ -23,24 +23,24 @@ public record AwaitStatement(String variableName) implements Statement {
         else {
             throw new VariableNotInTableException(variableName);
         }
-        if (state.barrierTable().isDefined(foundIndex)){
-            Pair<Integer, List<Integer>> pair = state.barrierTable().lookUp(foundIndex);
-            List<Integer> addresses = pair.getValue();
-            int length = pair.getValue().size();
-            int capacity = pair.getKey();
-            if (capacity > length) {
-                if (addresses.contains(state.id())) {
-                    state.executionStack().push(this);
+        synchronized (state.barrierTable()) {
+            if (state.barrierTable().isDefined(foundIndex)) {
+                Pair<Integer, List<Integer>> pair = state.barrierTable().lookUp(foundIndex);
+                List<Integer> addresses = pair.getValue();
+                int length = pair.getValue().size();
+                int capacity = pair.getKey();
+                if (capacity > length) {
+                    if (addresses.contains(state.id())) {
+                        state.executionStack().push(this);
+                    } else {
+                        addresses.add(state.id());
+                        state.barrierTable().update(foundIndex, new Pair<>(capacity, addresses));
+                        state.executionStack().push(this);
+                    }
                 }
-                else{
-                    addresses.add(state.id());
-                    state.barrierTable().update(foundIndex,new Pair<>(capacity,addresses));
-                    state.executionStack().push(this);
-                }
+            } else {
+                throw new AddressNotInBarrierTable("Address not in Barrier Table");
             }
-        }
-        else{
-            throw new AddressNotInBarrierTable("Address not in Barrier Table");
         }
         return null;
     }
