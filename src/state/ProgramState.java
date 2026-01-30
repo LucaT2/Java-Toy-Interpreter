@@ -9,7 +9,8 @@ public record ProgramState(
         SymbolTable symbolTable,
         Out out,
         FileTable fileTable,
-        Heap heap) {
+        Heap heap,
+        LockTable lockTable) {
     
     private static int nextId = 1;
     
@@ -23,8 +24,9 @@ public record ProgramState(
             SymbolTable symbolTable,
             Out out,
             FileTable fileTable,
-            Heap heap) {
-        this(getNextId(), executionStack, symbolTable, out, fileTable, heap);
+            Heap heap,
+            LockTable lockTable) {
+        this(getNextId(), executionStack, symbolTable, out, fileTable, heap, lockTable);
     }
     
     Boolean isNotCompleted(){
