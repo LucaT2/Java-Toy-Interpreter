@@ -210,16 +210,13 @@ public class MainWindow {
         //Barrier lets see the commit
         // Inside updateUI()
         if (!allProgramStates.isEmpty()) {
-            // 1. Get the raw map from your state (adjust method names to match your implementation)
-            // Assuming it returns Map<Integer, Pair<Integer, List<Integer>>>
             var barrierMap = allProgramStates.get(0).barrierTable().getBarrierTable();
 
-            // 2. Convert Map entries to BarrierTableRow objects
             List<BarrierTableRow> tableLines = barrierMap.entrySet().stream()
                     .map(e -> new BarrierTableRow(
-                            e.getKey(),               // index
-                            e.getValue().getKey(),    // value (threshold)
-                            e.getValue().getValue()   // list (IDs)
+                            e.getKey(),
+                            e.getValue().getKey(),
+                            e.getValue().getValue()
                     ))
                     .collect(Collectors.toList());
 
