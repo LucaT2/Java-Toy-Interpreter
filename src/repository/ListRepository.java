@@ -65,6 +65,11 @@ public class ListRepository implements Repository {
             this.logFile.print(val.toString());
             this.logFile.println(" --> " + currentProgramState.heap().lookUp(val).toString());
         }
+        this.logFile.println("SemaphoreTable:");
+        for (var val:currentProgramState.semaphoreTable().getSemaphoreTable().keySet()){
+            this.logFile.print(val.toString());
+            this.logFile.println(" --> " + currentProgramState.semaphoreTable().lookUp(val).toString());
+        }
         this.logFile.println("----------------------------------------\n");
         this.logFile.flush();
     }

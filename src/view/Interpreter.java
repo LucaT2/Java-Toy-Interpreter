@@ -17,7 +17,7 @@ import repository.Repository;
 import state.*;
 
 import java.util.HashMap;
-public class Interpreter extends Application { // Change to public and extend Application
+public class Interpreter extends Application {
 
     @Override
     public void start(Stage primaryStage) {
@@ -107,13 +107,75 @@ public class Interpreter extends Application { // Change to public and extend Ap
                 )
         );
 
-        java.util.List<Statement> programs = java.util.Arrays.asList(ex1, ex2, ex3, ex4, ex5);
+        Statement ex6 = new CompoundStatement(
+                new VariableDeclarationStatement(Type.INTEGER, "a"),
+                new CompoundStatement(new VariableDeclarationStatement(Type.INTEGER, "b"),
+                        new CompoundStatement(new VariableDeclarationStatement(Type.INTEGER, "c"),
+                                new CompoundStatement(new AssignmentStatement("a", new ValueExpression(new IntegerValue(1))),
+                                        new CompoundStatement(new AssignmentStatement("b", new ValueExpression(new IntegerValue(2))),
+                                                new CompoundStatement(new AssignmentStatement("c", new ValueExpression(new IntegerValue(5))),
+                                                        new CompoundStatement(
+                                                                new SwitchStatement(
+                                                                        new ArithmeticExpression(new VariableExpression("a"), new ValueExpression(new IntegerValue(10)), '*'),
+                                                                        new ArithmeticExpression(new VariableExpression("b"), new VariableExpression("c"), '*'),
+                                                                        new ValueExpression(new IntegerValue(10)),
+                                                                        new CompoundStatement(new PrintStatement(new VariableExpression("a")), new PrintStatement(new VariableExpression("b"))),
+                                                                        new CompoundStatement(new PrintStatement(new ValueExpression(new IntegerValue(100))), new PrintStatement(new ValueExpression(new IntegerValue(200)))),
+                                                                        new PrintStatement(new ValueExpression(new IntegerValue(300)))
+                                                                ),
+                                                                new PrintStatement(new ValueExpression(new IntegerValue(300)))
+                                                        )))))));
+
+
+        Statement ex7 = new CompoundStatement(
+                new VariableDeclarationStatement(new RefType(Type.INTEGER), "v1"),
+                new CompoundStatement(new VariableDeclarationStatement(Type.INTEGER, "cnt"),
+                        new CompoundStatement(new HeapAllocStatement("v1", new ValueExpression(new IntegerValue(1))),
+                                new CompoundStatement(new CreateSemaphore("cnt", new HeapReadExpression(new VariableExpression("v1"))),
+                                        new CompoundStatement(
+                                                new ForkStatement(
+                                                        new CompoundStatement(new Acquire("cnt"),
+                                                                new CompoundStatement(new HeapWriteStatement("v1", new ArithmeticExpression(new HeapReadExpression(new VariableExpression("v1")), new ValueExpression(new IntegerValue(10)), '*')),
+                                                                        new CompoundStatement(new PrintStatement(new HeapReadExpression(new VariableExpression("v1"))),
+                                                                                new Release("cnt"))))
+                                                ),
+                                                new CompoundStatement(
+                                                        new ForkStatement(
+                                                                new CompoundStatement(new Acquire("cnt"),
+                                                                        new CompoundStatement(new HeapWriteStatement("v1", new ArithmeticExpression(new HeapReadExpression(new VariableExpression("v1")), new ValueExpression(new IntegerValue(10)), '*')),
+                                                                                new CompoundStatement(new HeapWriteStatement("v1", new ArithmeticExpression(new HeapReadExpression(new VariableExpression("v1")), new ValueExpression(new IntegerValue(2)), '*')),
+                                                                                        new CompoundStatement(new PrintStatement(new HeapReadExpression(new VariableExpression("v1"))),
+                                                                                                new Release("cnt")))))
+                                                        ),
+                                                        new CompoundStatement(new Acquire("cnt"),
+                                                                new CompoundStatement(new PrintStatement(new ArithmeticExpression(new HeapReadExpression(new VariableExpression("v1")), new ValueExpression(new IntegerValue(1)), '-')),
+                                                                        new Release("cnt")))
+                                                ))))));
+
+
+        try {
+            ex1.typeCheck(new HashMap<String, Type>());
+            ex2.typeCheck(new HashMap<String, Type>());
+            ex3.typeCheck(new HashMap<String, Type>());
+            ex4.typeCheck(new HashMap<String, Type>());
+            ex5.typeCheck(new HashMap<String, Type>());
+            ex6.typeCheck(new HashMap<String, Type>());
+            ex7.typeCheck(new HashMap<String, Type>());
+
+            IO.println("All typecheckers for all examples passed");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            IO.println(e.getMessage());
+        }
+
+        java.util.List<Statement> programs = java.util.Arrays.asList(ex1, ex2, ex3, ex4, ex5, ex6, ex7);
         SelectWindow selectWindow = new SelectWindow(programs);
         selectWindow.show();
     }
 
     public static void main(String[] args) {
-        // Instead of menu.show(), call launch()
+
         launch(args);
     }
 }

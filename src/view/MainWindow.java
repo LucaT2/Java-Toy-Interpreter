@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import model.value.Value;
 import state.ProgramState;
 
@@ -32,7 +33,7 @@ public class MainWindow {
     private ListView<String> exeStackView;
     private Button runOneStepButton;
     private List<ProgramState> allProgramStates = new java.util.ArrayList<>();
-    //private TableView<BarrierTableRow> barrierTableView;
+    private TableView<SemaphoreRow> semaphoreTable;
     public MainWindow(Controller controller) {
         this.controller = controller;
     }
@@ -113,24 +114,24 @@ public class MainWindow {
 
         //Barrier Table
         // Barrier Table UI Section
-//        VBox barrierBox = new VBox(5);
-//        barrierBox.getChildren().add(new Label("Barrier Table"));
-//        barrierTableView = new TableView<>();
-//
-//        TableColumn<BarrierTableRow, Integer> indexCol = new TableColumn<>("Index");
-//        indexCol.setCellValueFactory(new PropertyValueFactory<>("index"));
-//
-//        TableColumn<BarrierTableRow, Integer> valueCol = new TableColumn<>("Value");
-//        valueCol.setCellValueFactory(new PropertyValueFactory<>("value"));
-//
-//        TableColumn<BarrierTableRow, String> listCol = new TableColumn<>("List of Values");
-//        listCol.setCellValueFactory(new PropertyValueFactory<>("list"));
+        VBox semaphoreBox = new VBox(5);
+        semaphoreBox.getChildren().add(new Label("Semaphore Table"));
+        semaphoreTable = new TableView<>();
 
-//        barrierTableView.getColumns().addAll(indexCol, valueCol, listCol);
-//        barrierBox.getChildren().add(barrierTableView);
-//
-//        // Place it in the grid (e.g., column 1, row 2)
-//        tablesGrid.add(barrierBox, 0, 2);
+        TableColumn<SemaphoreRow, Integer> indexCol = new TableColumn<>("Index");
+        indexCol.setCellValueFactory(new PropertyValueFactory<>("index"));
+
+        TableColumn<SemaphoreRow, Integer> valueCol = new TableColumn<>("Max Permits");
+        valueCol.setCellValueFactory(new PropertyValueFactory<>("value"));
+
+        TableColumn<SemaphoreRow, String> listCol = new TableColumn<>("Active Threads");
+        listCol.setCellValueFactory(new PropertyValueFactory<>("threads"));
+
+        semaphoreTable.getColumns().addAll(indexCol, valueCol, listCol);
+        semaphoreBox.getChildren().add(semaphoreTable);
+
+        // Place it in the grid (e.g., column 1, row 2)
+        tablesGrid.add(semaphoreBox, 0, 2);
 
         // 2(h) A button "Run one step"
         runOneStepButton = new Button("Run one step");
@@ -207,28 +208,24 @@ public class MainWindow {
             exeStackView.setItems(FXCollections.emptyObservableList());
         }
 
-//        //Barrier
-//        // Inside updateUI()
-//        if (!allProgramStates.isEmpty()) {
-//            // 1. Get the raw map from your state (adjust method names to match your implementation)
-//            // Assuming it returns Map<Integer, Pair<Integer, List<Integer>>>
-//            var barrierMap = allProgramStates.get(0).barrierTable().getBarrierTable();
-//
-//            // 2. Convert Map entries to BarrierTableRow objects
-//            List<BarrierTableRow> tableLines = barrierMap.entrySet().stream()
-//                    .map(e -> new BarrierTableRow(
-//                            e.getKey(),               // index
-//                            e.getValue().getKey(),    // value (threshold)
-//                            e.getValue().getValue()   // list (IDs)
-//                    ))
-//                    .collect(Collectors.toList());
-//
-//            // 3. Set items
-//            barrierTableView.setItems(FXCollections.observableArrayList(tableLines));
-//            barrierTableView.refresh();
-//        } else {
-//            barrierTableView.setItems(FXCollections.emptyObservableList());
-//        }
+        // Semaphore Table Update
+        if (!programStates.isEmpty()) {
+            // We use the semaphore table from the first program state (shared across all)
+            var semTable = programStates.get(0).semaphoreTable().getSemaphoreTable();
+
+            List<SemaphoreRow> rows = semTable.entrySet().stream()
+                    .map(e -> new SemaphoreRow(
+                            e.getKey(),              // The Address
+                            e.getValue().getKey(),   // The Max Permits
+                            e.getValue().getValue()  // The List of Thread IDs
+                    ))
+                    .collect(Collectors.toList());
+
+            semaphoreTable.setItems(FXCollections.observableArrayList(rows));
+            semaphoreTable.refresh();
+        } else {
+            semaphoreTable.setItems(FXCollections.emptyObservableList());
+        }
     }
 
     private void updateSymbolTableAndStack(Integer id) {
