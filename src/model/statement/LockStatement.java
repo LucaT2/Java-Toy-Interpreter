@@ -17,18 +17,18 @@ public record LockStatement(String variable) implements Statement {
             var value = state.symbolTable().LookUp(variable);
             if (value instanceof IntegerValue IntegerValue) {
                 int foundIndex = (Integer) IntegerValue.value();
-                if (state.lockTable().isDefined(foundIndex)) {
-                    int lockValue = state.lockTable().lookUp(foundIndex);
-                    if (lockValue == -1) {
-                        state.lockTable().update(foundIndex, state.id());
+                synchronized (state.lockTable()) {
+                    if (state.lockTable().isDefined(foundIndex)) {
+                        int lockValue = state.lockTable().lookUp(foundIndex);
+                        if (lockValue == -1) {
+                            state.lockTable().update(foundIndex, state.id());
 
+                        } else {
+                            state.executionStack().push(this);
+                        }
+                    } else {
+                        throw new AddressNotInLockTable("Address " + foundIndex + " is not in lock table");
                     }
-                    else{
-                        state.executionStack().push(this);
-                    }
-                }
-                else{
-                    throw new AddressNotInLockTable("Address " + foundIndex + " is not in lock table");
                 }
             }
             else {

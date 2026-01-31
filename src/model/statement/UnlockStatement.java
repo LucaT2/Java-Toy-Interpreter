@@ -17,14 +17,15 @@ public record UnlockStatement(String variable) implements Statement {
             var value = state.symbolTable().LookUp(variable);
             if (value instanceof IntegerValue IntegerValue) {
                 int foundIndex = (Integer) IntegerValue.value();
-                if (state.lockTable().isDefined(foundIndex)) {
-                    int lockValue = state.lockTable().lookUp(foundIndex);
-                    if (lockValue == state.id()){
-                        state.lockTable().update(foundIndex, -1);
+                synchronized (state.lockTable()) {
+                    if (state.lockTable().isDefined(foundIndex)) {
+                        int lockValue = state.lockTable().lookUp(foundIndex);
+                        if (lockValue == state.id()) {
+                            state.lockTable().update(foundIndex, -1);
+                        }
+                    } else {
+                        throw new AddressNotInLockTable("Address " + foundIndex + " is not in lock table");
                     }
-                }
-                else{
-                    throw new AddressNotInLockTable("Address " + foundIndex + " is not in lock table");
                 }
             }
             else {
