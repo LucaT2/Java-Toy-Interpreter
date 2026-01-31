@@ -13,13 +13,14 @@ public record AwaitStatement(String variable)  implements Statement {
     public ProgramState execute(ProgramState state) {
         if (state.symbolTable().isDefined(variable)) {
             if (state.symbolTable().LookUp(variable) instanceof IntegerValue (int foundIndex)) {
-                if (state.latchTable().isDefined(foundIndex)) {
-                    if (state.latchTable().lookUp(foundIndex) != 0){
-                        state.executionStack().push(this);
+                synchronized (state.latchTable()) {
+                    if (state.latchTable().isDefined(foundIndex)) {
+                        if (state.latchTable().lookUp(foundIndex) != 0) {
+                            state.executionStack().push(this);
+                        }
+                    } else {
+                        throw new VariableNotInTableException(foundIndex + "not in latch");
                     }
-                }
-                else {
-                    throw new VariableNotInTableException(foundIndex + "not in latch");
                 }
             }
             else{
