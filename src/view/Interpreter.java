@@ -107,7 +107,44 @@ public class Interpreter extends Application { // Change to public and extend Ap
                 )
         );
 
-        java.util.List<Statement> programs = java.util.Arrays.asList(ex1, ex2, ex3, ex4, ex5);
+        Statement ex6 = new CompoundStatement(
+                new VariableDeclarationStatement(Type.INTEGER, "v"),
+                new CompoundStatement(
+                        new AssignmentStatement("v", new ValueExpression(new IntegerValue(10))),
+                        new CompoundStatement(
+                                new ForkStatement(
+                                        new CompoundStatement(
+                                                new AssignmentStatement("v", new ArithmeticExpression(new VariableExpression("v"), new ValueExpression(new IntegerValue(1)), '-')),
+                                                new CompoundStatement(
+                                                        new AssignmentStatement("v", new ArithmeticExpression(new VariableExpression("v"), new ValueExpression(new IntegerValue(1)), '-')),
+                                                        new PrintStatement(new VariableExpression("v"))
+                                                )
+                                        )
+                                ),
+                                new CompoundStatement(
+                                        new SleepStatement(10),
+                                        new PrintStatement(new ArithmeticExpression(new VariableExpression("v"), new ValueExpression(new IntegerValue(10)), '*'))
+                                )
+                        )
+                )
+        );
+
+
+        try {
+            ex1.typeCheck(new HashMap<String, Type>());
+            ex2.typeCheck(new HashMap<String, Type>());
+            ex3.typeCheck(new HashMap<String, Type>());
+            ex4.typeCheck(new HashMap<String, Type>());
+            ex5.typeCheck(new HashMap<String, Type>());
+            ex6.typeCheck(new HashMap<String, Type>());
+
+            IO.println("All typecheckers for all examples passed");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            IO.println(e.getMessage());
+        }
+        java.util.List<Statement> programs = java.util.Arrays.asList(ex1, ex2, ex3, ex4, ex5, ex6);
         SelectWindow selectWindow = new SelectWindow(programs);
         selectWindow.show();
     }
