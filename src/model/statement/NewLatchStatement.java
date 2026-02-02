@@ -24,11 +24,11 @@ public record NewLatchStatement(String variable, Expression expression) implemen
                 }
             }
             else {
-                throw new VariableNotInTableException(variable);
+                throw new VariableNotInTableException(variable + "is not in table");
             }
         }
         else {
-            throw new InvalidTypeException("Type not valid in new latch");
+            throw new InvalidTypeException("Type not valid in NewLatch statement");
         }
         return null;
     }
@@ -41,7 +41,7 @@ public record NewLatchStatement(String variable, Expression expression) implemen
         if (typeVar.equals(new Type.Integer()) && typeExp.equals(new Type.Integer())) {
             return typeEnv;
         } else {
-            throw new InvalidTypeException("NewLatch: variable and expression must be IntType.");
+            throw new InvalidTypeException("Exception occured in NewLatchStatement: variable and expression must be of type Integer.");
         }
     }
 }

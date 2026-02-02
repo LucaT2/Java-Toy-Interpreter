@@ -1,5 +1,7 @@
 package state;
 
+import state.exceptions.VariableNotInTableException;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,7 +23,7 @@ public class MapLatchTable implements LatchTable{
             return latchMap.get(address);
         }
         else {
-            throw new RuntimeException("No such address " + address);
+            throw new VariableNotInTableException("No such address " + address);
         }
 
     }
@@ -32,7 +34,7 @@ public class MapLatchTable implements LatchTable{
             latchMap.remove(address);
         }
         else {
-            throw new RuntimeException("Address not found");
+            throw new VariableNotInTableException("Address not found");
         }
     }
 

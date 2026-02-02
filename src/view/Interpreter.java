@@ -17,7 +17,7 @@ import repository.Repository;
 import state.*;
 
 import java.util.HashMap;
-public class Interpreter extends Application { // Change to public and extend Application
+public class Interpreter extends Application {
 
     @Override
     public void start(Stage primaryStage) {
