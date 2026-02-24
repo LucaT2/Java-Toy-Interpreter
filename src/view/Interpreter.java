@@ -10,7 +10,7 @@ import model.value.BooleanValue;
 import model.value.IntegerValue;
 
 import java.util.HashMap;
-public class Interpreter extends Application { // Change to public and extend Application
+public class Interpreter extends Application {
 
     @Override
     public void start(Stage primaryStage) {
@@ -345,7 +345,6 @@ public class Interpreter extends Application { // Change to public and extend Ap
     }
 
     public static void main(String[] args) {
-        // Instead of menu.show(), call launch()
         launch(args);
     }
 }

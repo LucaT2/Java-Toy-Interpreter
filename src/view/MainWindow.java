@@ -34,6 +34,7 @@ public class MainWindow {
     private List<ProgramState> allProgramStates = new java.util.ArrayList<>();
     private TableView<Map.Entry<Integer, Integer>> lockTable;
     private TableView<Map.Entry<Integer, Integer>> latchTable;
+    private TableView<BarrierTableRow> barrierTableView;
 
     public MainWindow(Controller controller) {
         this.controller = controller;
@@ -141,6 +142,25 @@ public class MainWindow {
         tablesGrid.add(lockBox, 0, 2);
         mainLayout.getChildren().add(tablesGrid);
 
+        VBox barrierBox = new VBox(5);
+        barrierBox.getChildren().add(new Label("Barrier Table"));
+        barrierTableView = new TableView<>();
+
+        TableColumn<BarrierTableRow, Integer> indexColBar = new TableColumn<>("Index");
+        indexColBar.setCellValueFactory(new PropertyValueFactory<>("index"));
+
+        TableColumn<BarrierTableRow, Integer> valueColBar = new TableColumn<>("Value");
+        valueColBar.setCellValueFactory(new PropertyValueFactory<>("value"));
+
+        TableColumn<BarrierTableRow, String> listCol = new TableColumn<>("List of Values");
+        listCol.setCellValueFactory(new PropertyValueFactory<>("list"));
+
+        barrierTableView.getColumns().addAll(indexColBar, valueColBar, listCol);        barrierBox.getChildren().add(barrierTableView);
+
+        // Place it in the grid (e.g., column 1, row 2)
+        tablesGrid.add(barrierBox, 2, 2);
+
+
 
         // 2(h) A button "Run one step"
         runOneStepButton = new Button("Run one step");
@@ -227,8 +247,8 @@ public class MainWindow {
         }
 
         // Latch Table Update
-        if (!programStates.isEmpty()) {
-            Map<Integer, Integer> latchContents = programStates.get(0).latchTable().getLatchMap();
+        if (!allProgramStates.isEmpty()) {
+            Map<Integer, Integer> latchContents = allProgramStates.get(0).latchTable().getLatchMap();
 
             latchTable.setItems(FXCollections.observableArrayList(latchContents.entrySet()));
             latchTable.refresh();
@@ -237,6 +257,24 @@ public class MainWindow {
             latchTable.setItems(FXCollections.observableArrayList(latchContents.entrySet()));
         } else {
             latchTable.setItems(FXCollections.emptyObservableList());
+        }
+
+        if (!allProgramStates.isEmpty()) {
+            var barrierMap = allProgramStates.get(0).barrierTable().getBarrierTable();
+
+            List<BarrierTableRow> tableLines = barrierMap.entrySet().stream()
+                    .map(e -> new BarrierTableRow(
+                            e.getKey(),
+                            e.getValue().getKey(),
+                            e.getValue().getValue()
+                    ))
+                    .collect(Collectors.toList());
+
+            // 3. Set items
+            barrierTableView.setItems(FXCollections.observableArrayList(tableLines));
+            barrierTableView.refresh();
+        } else {
+            barrierTableView.setItems(FXCollections.emptyObservableList());
         }
     }
 
