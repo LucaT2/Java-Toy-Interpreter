@@ -320,6 +320,52 @@ public class Interpreter extends Application {
                 )
         );
 
+        Statement ex11 = new CompoundStatement(
+                new VariableDeclarationStatement(Type.INTEGER, "a"),
+                new CompoundStatement(new VariableDeclarationStatement(Type.INTEGER, "b"),
+                        new CompoundStatement(new VariableDeclarationStatement(Type.INTEGER, "c"),
+                                new CompoundStatement(new AssignmentStatement("a", new ValueExpression(new IntegerValue(1))),
+                                        new CompoundStatement(new AssignmentStatement("b", new ValueExpression(new IntegerValue(2))),
+                                                new CompoundStatement(new AssignmentStatement("c", new ValueExpression(new IntegerValue(5))),
+                                                        new CompoundStatement(
+                                                                new SwitchStatement(
+                                                                        new ArithmeticExpression(new VariableExpression("a"), new ValueExpression(new IntegerValue(10)), '*'),
+                                                                        new ArithmeticExpression(new VariableExpression("b"), new VariableExpression("c"), '*'),
+                                                                        new ValueExpression(new IntegerValue(10)),
+                                                                        new CompoundStatement(new PrintStatement(new VariableExpression("a")), new PrintStatement(new VariableExpression("b"))),
+                                                                        new CompoundStatement(new PrintStatement(new ValueExpression(new IntegerValue(100))), new PrintStatement(new ValueExpression(new IntegerValue(200)))),
+                                                                        new PrintStatement(new ValueExpression(new IntegerValue(300)))
+                                                                ),
+                                                                new PrintStatement(new ValueExpression(new IntegerValue(300)))
+                                                        )))))));
+
+
+        Statement ex12 = new CompoundStatement(
+                new VariableDeclarationStatement(new RefType(Type.INTEGER), "v1"),
+                new CompoundStatement(new VariableDeclarationStatement(Type.INTEGER, "cnt"),
+                        new CompoundStatement(new HeapAllocStatement("v1", new ValueExpression(new IntegerValue(1))),
+                                new CompoundStatement(new CreateSemaphore("cnt", new HeapReadExpression(new VariableExpression("v1"))),
+                                        new CompoundStatement(
+                                                new ForkStatement(
+                                                        new CompoundStatement(new Acquire("cnt"),
+                                                                new CompoundStatement(new HeapWriteStatement("v1", new ArithmeticExpression(new HeapReadExpression(new VariableExpression("v1")), new ValueExpression(new IntegerValue(10)), '*')),
+                                                                        new CompoundStatement(new PrintStatement(new HeapReadExpression(new VariableExpression("v1"))),
+                                                                                new Release("cnt"))))
+                                                ),
+                                                new CompoundStatement(
+                                                        new ForkStatement(
+                                                                new CompoundStatement(new Acquire("cnt"),
+                                                                        new CompoundStatement(new HeapWriteStatement("v1", new ArithmeticExpression(new HeapReadExpression(new VariableExpression("v1")), new ValueExpression(new IntegerValue(10)), '*')),
+                                                                                new CompoundStatement(new HeapWriteStatement("v1", new ArithmeticExpression(new HeapReadExpression(new VariableExpression("v1")), new ValueExpression(new IntegerValue(2)), '*')),
+                                                                                        new CompoundStatement(new PrintStatement(new HeapReadExpression(new VariableExpression("v1"))),
+                                                                                                new Release("cnt")))))
+                                                        ),
+                                                        new CompoundStatement(new Acquire("cnt"),
+                                                                new CompoundStatement(new PrintStatement(new ArithmeticExpression(new HeapReadExpression(new VariableExpression("v1")), new ValueExpression(new IntegerValue(1)), '-')),
+                                                                        new Release("cnt")))
+                                                ))))));
+
+
         try {
             ex1.typeCheck(new HashMap<String, Type>());
             ex2.typeCheck(new HashMap<String, Type>());
@@ -331,7 +377,8 @@ public class Interpreter extends Application {
             ex8.typeCheck(new HashMap<String, Type>());
             ex9.typeCheck(new HashMap<String, Type>());
             ex10.typeCheck(new HashMap<String, Type>());
-
+            ex11.typeCheck(new HashMap<String, Type>());
+            ex12.typeCheck(new HashMap<String, Type>());
 
             IO.println("All typecheckers for all examples passed");
         }
