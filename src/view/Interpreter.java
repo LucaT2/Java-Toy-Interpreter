@@ -106,130 +106,29 @@ public class Interpreter extends Application { // Change to public and extend Ap
                         )
                 )
         );
-        Statement ex6 = new CompoundStatement(
-                new VariableDeclarationStatement(new RefType(new Type.Integer()), "a"),
+
+        Statement ex8 = new CompoundStatement(
+                new VariableDeclarationStatement(Type.INTEGER, "v"),
                 new CompoundStatement(
-                        new HeapAllocStatement("a", new ValueExpression(new IntegerValue(20))),
+                        new AssignmentStatement("v", new ValueExpression(new IntegerValue(10))),
                         new CompoundStatement(
-                                new ForStatement(
-                                        "v",
-                                        new ValueExpression(new IntegerValue(0)),
-                                        new ValueExpression(new IntegerValue(3)),
-                                        new ArithmeticExpression(new VariableExpression("v"), new ValueExpression(new IntegerValue(1)),'+'),
-                                        new ForkStatement(
+                                new ForkStatement(
+                                        new CompoundStatement(
+                                                new AssignmentStatement("v", new ArithmeticExpression(new VariableExpression("v"), new ValueExpression(new IntegerValue(1)), '-')),
                                                 new CompoundStatement(
-                                                        new PrintStatement(new VariableExpression("v")),
-                                                        new AssignmentStatement("v", new ArithmeticExpression(
-                                                                new VariableExpression("v"),
-                                                                new HeapReadExpression(new VariableExpression("a")),  '*'
-                                                        ))
+                                                        new AssignmentStatement("v", new ArithmeticExpression(new VariableExpression("v"), new ValueExpression(new IntegerValue(1)), '-')),
+                                                        new PrintStatement(new VariableExpression("v"))
                                                 )
                                         )
                                 ),
-                                new PrintStatement(new HeapReadExpression(new VariableExpression("a")))
-                        )
-                )
-        );
-
-        Statement ex7 = new CompoundStatement(
-                new VariableDeclarationStatement(new RefType(Type.INTEGER), "v1"),
-                new CompoundStatement(
-                        new VariableDeclarationStatement(new RefType(Type.INTEGER), "v2"),
-                        new CompoundStatement(
-                                new VariableDeclarationStatement(Type.INTEGER, "x"),
                                 new CompoundStatement(
-                                        new VariableDeclarationStatement(Type.INTEGER, "q"),
-                                        new CompoundStatement(
-                                                new HeapAllocStatement("v1", new ValueExpression(new IntegerValue(20))),
-                                                new CompoundStatement(
-                                                        new HeapAllocStatement("v2", new ValueExpression(new IntegerValue(30))),
-                                                        new CompoundStatement(
-                                                                new NewLock("x"),
-                                                                new CompoundStatement(
-                                                                        new ForkStatement(
-                                                                                new CompoundStatement(
-                                                                                        new ForkStatement(
-                                                                                                new CompoundStatement(
-                                                                                                        new LockStatement("x"),
-                                                                                                        new CompoundStatement(
-                                                                                                                new HeapWriteStatement("v1", new ArithmeticExpression(new HeapReadExpression(new VariableExpression("v1")), new ValueExpression(new IntegerValue(1)), '-')),
-                                                                                                                new UnlockStatement("x")
-                                                                                                        )
-                                                                                                )
-                                                                                        ),
-                                                                                        new CompoundStatement(
-                                                                                                new LockStatement("x"),
-                                                                                                new CompoundStatement(
-                                                                                                        new HeapWriteStatement("v1", new ArithmeticExpression(new HeapReadExpression(new VariableExpression("v1")), new ValueExpression(new IntegerValue(10)), '*')),
-                                                                                                        new UnlockStatement("x")
-                                                                                                )
-                                                                                        )
-                                                                                )
-                                                                        ),
-                                                                        new CompoundStatement(
-                                                                                new NewLock("q"),
-                                                                                new CompoundStatement(
-                                                                                        new ForkStatement(
-                                                                                                new CompoundStatement(
-                                                                                                        new ForkStatement(
-                                                                                                                new CompoundStatement(
-                                                                                                                        new LockStatement("q"),
-                                                                                                                        new CompoundStatement(
-                                                                                                                                new HeapWriteStatement("v2", new ArithmeticExpression(new HeapReadExpression(new VariableExpression("v2")), new ValueExpression(new IntegerValue(5)), '+')),
-                                                                                                                                new UnlockStatement("q")
-                                                                                                                        )
-                                                                                                                )
-                                                                                                        ),
-                                                                                                        new CompoundStatement(
-                                                                                                                new LockStatement("q"),
-                                                                                                                new CompoundStatement(
-                                                                                                                        new HeapWriteStatement("v2", new ArithmeticExpression(new HeapReadExpression(new VariableExpression("v2")), new ValueExpression(new IntegerValue(10)), '*')),
-                                                                                                                        new UnlockStatement("q")
-                                                                                                                )
-                                                                                                        )
-                                                                                                )
-                                                                                        ),
-                                                                                        // ... previous fork/lock logic for q ...
-                                                                                        new CompoundStatement(
-                                                                                                new NoOperationStatement(),
-                                                                                                new CompoundStatement(
-                                                                                                        new NoOperationStatement(),
-                                                                                                        new CompoundStatement(
-                                                                                                                new NoOperationStatement(),
-                                                                                                                new CompoundStatement(
-                                                                                                                        new NoOperationStatement(),
-                                                                                                                        new CompoundStatement(
-                                                                                                                                // Print for v1
-                                                                                                                                new LockStatement("x"),
-                                                                                                                                new CompoundStatement(
-                                                                                                                                        new PrintStatement(new HeapReadExpression(new VariableExpression("v1"))),
-                                                                                                                                        new CompoundStatement(
-                                                                                                                                                new UnlockStatement("x"),
-                                                                                                                                                // Print for v2 (often required in these sync examples)
-                                                                                                                                                new CompoundStatement(
-                                                                                                                                                        new LockStatement("q"),
-                                                                                                                                                        new CompoundStatement(
-                                                                                                                                                                new PrintStatement(new HeapReadExpression(new VariableExpression("v2"))),
-                                                                                                                                                                new UnlockStatement("q")
-                                                                                                                                                        )
-                                                                                                                                                )
-                                                                                                                                        )
-                                                                                                                                )
-                                                                                                                        )
-                                                                                                                )
-                                                                                                        )
-                                                                                                )
-                                                                                        )
-                                                                                )
-                                                                        )
-                                                                )
-                                                        )
-                                                )
-                                        )
+                                        new SleepStatement(10),
+                                        new PrintStatement(new ArithmeticExpression(new VariableExpression("v"), new ValueExpression(new IntegerValue(10)), '*'))
                                 )
                         )
                 )
         );
+
 
         try {
             ex1.typeCheck(new HashMap<String, Type>());
@@ -237,8 +136,7 @@ public class Interpreter extends Application { // Change to public and extend Ap
             ex3.typeCheck(new HashMap<String, Type>());
             ex4.typeCheck(new HashMap<String, Type>());
             ex5.typeCheck(new HashMap<String, Type>());
-            ex6.typeCheck(new HashMap<String, Type>());
-            ex7.typeCheck(new HashMap<String, Type>());
+            ex8.typeCheck(new HashMap<String, Type>());
 
             IO.println("All typecheckers for all examples passed");
         }
@@ -246,7 +144,7 @@ public class Interpreter extends Application { // Change to public and extend Ap
             e.printStackTrace();
             IO.println(e.getMessage());
         }
-        java.util.List<Statement> programs = java.util.Arrays.asList(ex1, ex2, ex3, ex4, ex5,ex6, ex7);
+        java.util.List<Statement> programs = java.util.Arrays.asList(ex1, ex2, ex3, ex4, ex5, ex8);
         SelectWindow selectWindow = new SelectWindow(programs);
         selectWindow.show();
     }
