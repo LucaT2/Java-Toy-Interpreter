@@ -119,7 +119,8 @@ public class Controller {
                 new ListOut(),
                 new MapFileTable(),
                 new HeapMap(),
-                new MapLockTable());
+                new MapLockTable(),
+                new MapLatchTable());
         addProgramState(programState);
         allStep();
         //removeProgramState(programState);
