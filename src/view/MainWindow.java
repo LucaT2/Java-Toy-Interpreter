@@ -33,6 +33,8 @@ public class MainWindow {
     private Button runOneStepButton;
     private List<ProgramState> allProgramStates = new java.util.ArrayList<>();
     private TableView<Map.Entry<Integer, Integer>> lockTable;
+    private TableView<Map.Entry<Integer, Integer>> latchTable;
+
     public MainWindow(Controller controller) {
         this.controller = controller;
     }
