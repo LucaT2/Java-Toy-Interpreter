@@ -35,6 +35,7 @@ public class MainWindow {
     private TableView<Map.Entry<Integer, Integer>> lockTable;
     private TableView<Map.Entry<Integer, Integer>> latchTable;
     private TableView<BarrierTableRow> barrierTableView;
+    private TableView<SemaphoreRow> semaphoreTable;
 
     public MainWindow(Controller controller) {
         this.controller = controller;
@@ -161,6 +162,26 @@ public class MainWindow {
         tablesGrid.add(barrierBox, 2, 2);
 
 
+        VBox semaphoreBox = new VBox(5);
+        semaphoreBox.getChildren().add(new Label("Semaphore Table"));
+        semaphoreTable = new TableView<>();
+
+        TableColumn<SemaphoreRow, Integer> indexColSem = new TableColumn<>("Index");
+        indexColSem.setCellValueFactory(new PropertyValueFactory<>("index"));
+
+        TableColumn<SemaphoreRow, Integer> valueColSem = new TableColumn<>("Max Permits");
+        valueColSem.setCellValueFactory(new PropertyValueFactory<>("value"));
+
+        TableColumn<SemaphoreRow, String> listColSem = new TableColumn<>("Active Threads");
+        listColSem.setCellValueFactory(new PropertyValueFactory<>("threads"));
+
+        semaphoreTable.getColumns().addAll(indexColSem, valueColSem, listColSem);
+        semaphoreBox.getChildren().add(semaphoreTable);
+
+        // Place it in the grid (e.g., column 1, row 2)
+        tablesGrid.add(semaphoreBox, 0, 3);
+
+
 
         // 2(h) A button "Run one step"
         runOneStepButton = new Button("Run one step");
@@ -276,6 +297,25 @@ public class MainWindow {
         } else {
             barrierTableView.setItems(FXCollections.emptyObservableList());
         }
+
+        if (!programStates.isEmpty()) {
+            // We use the semaphore table from the first program state (shared across all)
+            var semTable = programStates.get(0).semaphoreTable().getSemaphoreTable();
+
+            List<SemaphoreRow> rows = semTable.entrySet().stream()
+                    .map(e -> new SemaphoreRow(
+                            e.getKey(),              // The Address
+                            e.getValue().getKey(),   // The Max Permits
+                            e.getValue().getValue()  // The List of Thread IDs
+                    ))
+                    .collect(Collectors.toList());
+
+            semaphoreTable.setItems(FXCollections.observableArrayList(rows));
+            semaphoreTable.refresh();
+        } else {
+            semaphoreTable.setItems(FXCollections.emptyObservableList());
+        }
+
     }
 
     private void updateSymbolTableAndStack(Integer id) {
