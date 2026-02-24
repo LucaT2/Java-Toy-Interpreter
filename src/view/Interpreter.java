@@ -201,6 +201,7 @@ public class Interpreter extends Application { // Change to public and extend Ap
         );
 
 
+
         try {
             ex1.typeCheck(new HashMap<String, Type>());
             ex2.typeCheck(new HashMap<String, Type>());
