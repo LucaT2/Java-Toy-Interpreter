@@ -118,7 +118,8 @@ public class Controller {
                 new MapSymbolTable(),
                 new ListOut(),
                 new MapFileTable(),
-                new HeapMap());
+                new HeapMap(),
+                new MapLockTable());
         addProgramState(programState);
         allStep();
         //removeProgramState(programState);

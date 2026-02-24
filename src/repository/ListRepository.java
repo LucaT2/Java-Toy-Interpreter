@@ -65,6 +65,11 @@ public class ListRepository implements Repository {
             this.logFile.print(val.toString());
             this.logFile.println(" --> " + currentProgramState.heap().lookUp(val).toString());
         }
+        this.logFile.println("LockTable:");
+        for(var val:currentProgramState.lockTable().getLockTable().keySet()){
+            this.logFile.print(val.toString());
+            this.logFile.println(" --> " + currentProgramState.lockTable().lookUp(val));
+        }
         this.logFile.println("----------------------------------------\n");
         this.logFile.flush();
     }
