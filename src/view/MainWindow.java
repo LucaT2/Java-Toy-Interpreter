@@ -224,6 +224,19 @@ public class MainWindow {
         } else {
             lockTable.setItems(FXCollections.emptyObservableList());
         }
+
+        // Latch Table Update
+        if (!programStates.isEmpty()) {
+            Map<Integer, Integer> latchContents = programStates.get(0).latchTable().getLatchMap();
+
+            latchTable.setItems(FXCollections.observableArrayList(latchContents.entrySet()));
+            latchTable.refresh();
+        } else if (!allProgramStates.isEmpty()) {
+            Map<Integer, Integer> latchContents = allProgramStates.get(0).latchTable().getLatchMap();
+            latchTable.setItems(FXCollections.observableArrayList(latchContents.entrySet()));
+        } else {
+            latchTable.setItems(FXCollections.emptyObservableList());
+        }
     }
 
     private void updateSymbolTableAndStack(Integer id) {
