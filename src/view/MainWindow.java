@@ -127,6 +127,20 @@ public class MainWindow {
         tablesGrid.add(lockBox, 0, 2);
         mainLayout.getChildren().add(tablesGrid);
 
+        // Latch Table
+        VBox latchBox = new VBox(5);
+        latchBox.getChildren().add(new Label("Latch Table"));
+        latchTable = new TableView<>();
+
+        TableColumn<Map.Entry<Integer, Integer>, Integer> indexCol = new TableColumn<>("Address");
+        indexCol.setCellValueFactory(p -> new SimpleIntegerProperty(p.getValue().getKey()).asObject());
+
+        TableColumn<Map.Entry<Integer, Integer>, Integer> valueCol = new TableColumn<>("Value");
+        valueCol.setCellValueFactory(p -> new SimpleIntegerProperty(p.getValue().getValue()).asObject());
+
+        latchTable.getColumns().addAll(indexCol, valueCol);
+        latchBox.getChildren().add(latchTable);
+
         // 2(h) A button "Run one step"
         runOneStepButton = new Button("Run one step");
         runOneStepButton.setOnAction(e -> {
