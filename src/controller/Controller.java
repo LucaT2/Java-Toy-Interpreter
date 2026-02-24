@@ -120,7 +120,8 @@ public class Controller {
                 new MapFileTable(),
                 new HeapMap(),
                 new MapLockTable(),
-                new MapLatchTable());
+                new MapLatchTable(),
+                new BarrierTableMap());
         addProgramState(programState);
         allStep();
         //removeProgramState(programState);

@@ -47,7 +47,8 @@ public class SelectWindow {
                         new ListOut(),
                         new MapFileTable(),
                         new HeapMap(),
-                        new MapLockTable(), new MapLatchTable());
+                        new MapLockTable(), new MapLatchTable(),
+                        new BarrierTableMap());
                 prg.executionStack().push(selectedStatement);
                 
                 Controller controller = new Controller(new ListRepository("log_gui.txt"));

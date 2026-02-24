@@ -20,7 +20,14 @@ public record ForkStatement(Statement statement) implements Statement{
             newSymTable.updateValue(entry.getKey(), entry.getValue().deepCopy());
         }
 
-        return new ProgramState(newStack, newSymTable, state.out(), state.fileTable(), state.heap(), state.lockTable(), state.latchTable());
+        return new ProgramState(newStack,
+                newSymTable,
+                state.out(),
+                state.fileTable(),
+                state.heap(),
+                state.lockTable(),
+                state.latchTable(),
+                state.barrierTable());
     }
 
     @Override
