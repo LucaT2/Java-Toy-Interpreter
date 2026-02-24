@@ -107,7 +107,7 @@ public class Interpreter extends Application { // Change to public and extend Ap
                 )
         );
 
-        Statement ex6 = new CompoundStatement(
+        Statement ex8 = new CompoundStatement(
                 new VariableDeclarationStatement(Type.INTEGER, "v"),
                 new CompoundStatement(
                         new AssignmentStatement("v", new ValueExpression(new IntegerValue(10))),
@@ -136,7 +136,7 @@ public class Interpreter extends Application { // Change to public and extend Ap
             ex3.typeCheck(new HashMap<String, Type>());
             ex4.typeCheck(new HashMap<String, Type>());
             ex5.typeCheck(new HashMap<String, Type>());
-            ex6.typeCheck(new HashMap<String, Type>());
+            ex8.typeCheck(new HashMap<String, Type>());
 
             IO.println("All typecheckers for all examples passed");
         }
@@ -144,7 +144,7 @@ public class Interpreter extends Application { // Change to public and extend Ap
             e.printStackTrace();
             IO.println(e.getMessage());
         }
-        java.util.List<Statement> programs = java.util.Arrays.asList(ex1, ex2, ex3, ex4, ex5, ex6);
+        java.util.List<Statement> programs = java.util.Arrays.asList(ex1, ex2, ex3, ex4, ex5, ex8);
         SelectWindow selectWindow = new SelectWindow(programs);
         selectWindow.show();
     }
