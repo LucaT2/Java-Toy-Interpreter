@@ -298,9 +298,9 @@ public class MainWindow {
             barrierTableView.setItems(FXCollections.emptyObservableList());
         }
 
-        if (!programStates.isEmpty()) {
+        if (!allProgramStates.isEmpty()) {
             // We use the semaphore table from the first program state (shared across all)
-            var semTable = programStates.get(0).semaphoreTable().getSemaphoreTable();
+            var semTable = allProgramStates.get(0).semaphoreTable().getSemaphoreTable();
 
             List<SemaphoreRow> rows = semTable.entrySet().stream()
                     .map(e -> new SemaphoreRow(

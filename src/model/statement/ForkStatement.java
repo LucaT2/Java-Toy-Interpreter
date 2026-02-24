@@ -24,7 +24,7 @@ public record ForkStatement(Statement statement) implements Statement{
                 state.lockTable(),
                 state.latchTable(),
                 state.barrierTable(),
-                new MapSemaphoreTable());
+                state.semaphoreTable());
     }
 
     @Override
