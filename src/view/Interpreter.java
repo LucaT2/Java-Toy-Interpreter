@@ -1,20 +1,13 @@
 package view;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import controller.Controller;
 import model.expression.*;
 import model.statement.*;
 import model.types.RefType;
 import model.types.Type;
 import model.value.BooleanValue;
 import model.value.IntegerValue;
-import repository.ListRepository;
-import repository.Repository;
-import state.*;
 
 import java.util.HashMap;
 public class Interpreter extends Application { // Change to public and extend Application
@@ -164,7 +157,7 @@ public class Interpreter extends Application { // Change to public and extend Ap
                                                                                                                         new CountDownStatement("cnt")))
                                                                                                 ),
 
-                                                                                                new CompoundStatement(new AwaitStatement("cnt"),
+                                                                                                new CompoundStatement(new LatchAwaitStatement("cnt"),
                                                                                                         new CompoundStatement(new PrintStatement(new ValueExpression(new IntegerValue(100))),
                                                                                                                 new CompoundStatement(new CountDownStatement("cnt"),
                                                                                                                         new PrintStatement(new ValueExpression(new IntegerValue(100))))))
@@ -278,7 +271,7 @@ public class Interpreter extends Application { // Change to public and extend Ap
                                                                         new CompoundStatement(
                                                                                 new ForkStatement(
                                                                                         new CompoundStatement(
-                                                                                                new AwaitStatement("cnt"),
+                                                                                                new LatchAwaitStatement("cnt"),
                                                                                                 new CompoundStatement(
                                                                                                         new HeapWriteStatement("v1", new ArithmeticExpression(
                                                                                                                 new HeapReadExpression(new VariableExpression("v1")),
@@ -292,7 +285,7 @@ public class Interpreter extends Application { // Change to public and extend Ap
                                                                                 new CompoundStatement(
                                                                                         new ForkStatement(
                                                                                                 new CompoundStatement(
-                                                                                                        new AwaitStatement("cnt"),
+                                                                                                        new LatchAwaitStatement("cnt"),
                                                                                                         new CompoundStatement(
                                                                                                                 new HeapWriteStatement("v2", new ArithmeticExpression(
                                                                                                                         new HeapReadExpression(new VariableExpression("v2")),
@@ -311,7 +304,7 @@ public class Interpreter extends Application { // Change to public and extend Ap
                                                                                                 )
                                                                                         ),
                                                                                         new CompoundStatement(
-                                                                                                new AwaitStatement("cnt"),
+                                                                                                new LatchAwaitStatement("cnt"),
                                                                                                 new PrintStatement(new HeapReadExpression(new VariableExpression("v3")))
                                                                                         )
                                                                                 )

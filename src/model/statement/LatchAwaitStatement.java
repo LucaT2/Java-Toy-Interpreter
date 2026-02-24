@@ -8,7 +8,7 @@ import state.exceptions.VariableNotInTableException;
 
 import java.util.Map;
 
-public record AwaitStatement(String variable)  implements Statement {
+public record LatchAwaitStatement(String variable)  implements Statement {
     @Override
     public ProgramState execute(ProgramState state) {
         if (state.symbolTable().isDefined(variable)) {
