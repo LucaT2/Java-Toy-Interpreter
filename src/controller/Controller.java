@@ -121,7 +121,8 @@ public class Controller {
                 new HeapMap(),
                 new MapLockTable(),
                 new MapLatchTable(),
-                new BarrierTableMap());
+                new BarrierTableMap(),
+                new MapSemaphoreTable());
         addProgramState(programState);
         allStep();
         //removeProgramState(programState);

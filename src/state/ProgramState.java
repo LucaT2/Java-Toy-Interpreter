@@ -12,7 +12,8 @@ public record ProgramState(
         Heap heap,
         LockTable lockTable,
         LatchTable latchTable,
-        BarrierTable barrierTable) {
+        BarrierTable barrierTable,
+        SemaphoreTable semaphoreTable) {
     
     private static int nextId = 1;
     
@@ -29,8 +30,9 @@ public record ProgramState(
             Heap heap,
             LockTable lockTable,
             LatchTable latchTable,
-            BarrierTable barrierTable) {
-        this(getNextId(), executionStack, symbolTable, out, fileTable, heap, lockTable, latchTable, barrierTable);
+            BarrierTable barrierTable,
+            SemaphoreTable semaphoreTable) {
+        this(getNextId(), executionStack, symbolTable, out, fileTable, heap, lockTable, latchTable, barrierTable, semaphoreTable);
     }
     
     Boolean isNotCompleted(){

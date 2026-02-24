@@ -386,7 +386,7 @@ public class Interpreter extends Application {
             e.printStackTrace();
             IO.println(e.getMessage());
         }
-        java.util.List<Statement> programs = java.util.Arrays.asList(ex1, ex2, ex3, ex4, ex5,ex6,ex7, ex8, ex9, ex10);
+        java.util.List<Statement> programs = java.util.Arrays.asList(ex1, ex2, ex3, ex4, ex5,ex6,ex7, ex8, ex9, ex10,ex11, ex12);
         SelectWindow selectWindow = new SelectWindow(programs);
         selectWindow.show();
     }

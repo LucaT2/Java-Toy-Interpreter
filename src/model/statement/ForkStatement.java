@@ -1,11 +1,7 @@
 package model.statement;
 
 import model.types.Type;
-import state.ExecutionStack;
-import state.ListExecutionStack;
-import state.MapSymbolTable;
-import state.ProgramState;
-import state.SymbolTable;
+import state.*;
 
 import java.util.Map;
 
@@ -27,7 +23,8 @@ public record ForkStatement(Statement statement) implements Statement{
                 state.heap(),
                 state.lockTable(),
                 state.latchTable(),
-                state.barrierTable());
+                state.barrierTable(),
+                new MapSemaphoreTable());
     }
 
     @Override
