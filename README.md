@@ -1,6 +1,6 @@
 #  Java Toy Language Interpreter
 
-![Java](https://img.shields.io/badge/Java-11%2B-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Java](https://img.shields.io/badge/Java-25%2B-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![JavaFX](https://img.shields.io/badge/JavaFX-GUI-474A54?style=for-the-badge&logo=java&logoColor=white)
 ![Design Patterns](https://img.shields.io/badge/Design_Patterns-MVC_%7C_Command-success?style=for-the-badge)
 
